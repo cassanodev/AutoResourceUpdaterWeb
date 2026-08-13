@@ -11,71 +11,44 @@ import {
   Users,
   X,
 } from "lucide-react";
-type Status = "qualified" | "pending" | "inactive" | "not-applicable";
-const referrals = [
-  {
-    id: "1182947503019952148",
-    user: "milo.dev",
-    joined: "Jul 29, 2026",
-    plan: "Lifetime",
-    commission: 5,
-    status: "qualified" as Status,
-  },
-  {
-    id: "821406773908522004",
-    user: "nora_scripts",
-    joined: "Jul 31, 2026",
-    plan: "Monthly",
-    commission: 2,
-    status: "pending" as Status,
-    qualifies: "Aug 14, 2026 at 2:40 PM",
-  },
-  {
-    id: "1062251480745336882",
-    user: "westside.rp",
-    joined: "Aug 1, 2026",
-    plan: "Lifetime",
-    commission: 5,
-    status: "pending" as Status,
-    qualifies: "Aug 15, 2026 at 11:18 AM",
-  },
-  {
-    id: "490821773610729492",
-    user: "franklinmods",
-    joined: "Jul 22, 2026",
-    plan: "Monthly",
-    commission: 0,
-    status: "inactive" as Status,
-  },
-  {
-    id: "732915064129306634",
-    user: "garage.lab",
-    joined: "Jul 18, 2026",
-    plan: "Refunded",
-    commission: 0,
-    status: "not-applicable" as Status,
-  },
-  {
-    id: "1160038327594281061",
-    user: "citycore",
-    joined: "Jul 11, 2026",
-    plan: "Lifetime",
-    commission: 5,
-    status: "qualified" as Status,
-  },
-];
+import type {
+  AffiliateData,
+  ReferralStatus as Status,
+} from "@/lib/external-api";
+import { WithdrawalRequestModal } from "@/components/withdrawal-request-modal";
 const labels: Record<Status, string> = {
   qualified: "Qualified",
   pending: "Pending",
   inactive: "Inactive",
   "not-applicable": "Not applicable",
 };
-export function AffiliateDashboard() {
+export function AffiliateDashboard({ data }: { data: AffiliateData }) {
   const [filter, setFilter] = useState<"all" | Status>("all");
   const [search, setSearch] = useState("");
   const [withdraw, setWithdraw] = useState(false);
   const [copied, setCopied] = useState(false);
-  const referralCode = "WELCOME1";
+  const referrals = data.referrals.map((referral) => ({
+    id: referral.discordId,
+    user: referral.discordUsername,
+    joined: new Date(referral.registeredAt).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
+    plan: referral.plan,
+    commission: referral.commission,
+    status: referral.status,
+    qualifies: referral.qualifiesAt
+      ? new Date(referral.qualifiesAt).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })
+      : undefined,
+  }));
+  const referralCode = data.referralCode;
   const visible = useMemo(
     () =>
       referrals.filter(
@@ -101,29 +74,30 @@ export function AffiliateDashboard() {
         </div>
         <button
           onClick={() => setWithdraw(true)}
+          disabled={data.availableBalance < 30}
           className="sm:ml-auto flex h-10 items-center justify-center gap-2 rounded-lg border border-emerald-400/20 bg-emerald-400/[.08] px-4 text-[10px] font-semibold text-emerald-300 hover:bg-emerald-400/[.13]"
         >
           <ArrowDownToLine className="h-3.5 w-3.5" />
-          Withdraw funds
+          {data.availableBalance < 30 ? "Minimum $30 to withdraw" : "Withdraw funds"}
         </button>
       </div>
       <div className="grid gap-3 md:grid-cols-3">
         <Stat
           label="Available balance"
-          value="$10.00"
+          value={`$${data.availableBalance.toFixed(2)}`}
           sub="Ready to withdraw"
           accent="green"
         />
         <Stat
           label="Pending balance"
-          value="$7.00"
-          sub="2 referrals in refund window"
+          value={`$${data.pendingBalance.toFixed(2)}`}
+          sub={`${referrals.filter((item) => item.status === "pending").length} referrals in refund window`}
           accent="amber"
         />
         <Stat
           label="Lifetime earned"
-          value="$27.00"
-          sub="Across 8 qualified referrals"
+          value={`$${data.lifetimeEarned.toFixed(2)}`}
+          sub={`Across ${data.qualifiedCount} qualified referrals`}
           accent="slate"
         />
       </div>
@@ -236,7 +210,12 @@ export function AffiliateDashboard() {
         Pending referrals qualify after the refund window closes. Hover a
         pending status to see the exact qualification date.
       </div>
-      {withdraw && <WithdrawModal onClose={() => setWithdraw(false)} />}
+      {withdraw && (
+        <WithdrawalRequestModal
+          available={data.availableBalance}
+          onClose={() => setWithdraw(false)}
+        />
+      )}
     </div>
   );
 }
@@ -303,8 +282,33 @@ function StatusBadge({
     </span>
   );
 }
-function WithdrawModal({ onClose }: { onClose: () => void }) {
+function WithdrawModal({
+  onClose,
+  amount,
+}: {
+  onClose: () => void;
+  amount: number;
+}) {
   const [requested, setRequested] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const requestWithdrawal = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/affiliates/withdraw", {
+        method: "POST",
+      });
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.error || "Unable to request withdrawal");
+      setRequested(true);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unable to request withdrawal");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/75 p-5 backdrop-blur-sm">
       <div className="w-full max-w-[430px] rounded-2xl border border-white/[.09] bg-[#11171c] p-6 shadow-2xl">
@@ -328,7 +332,7 @@ function WithdrawModal({ onClose }: { onClose: () => void }) {
               Withdrawal requested
             </h2>
             <p className="mt-2 text-[10px] leading-5 text-slate-500">
-              Your $10.00 payout request is now being reviewed.
+              Your ${amount.toFixed(2)} payout request is now being reviewed.
             </p>
             <button
               onClick={onClose}
@@ -350,14 +354,18 @@ function WithdrawModal({ onClose }: { onClose: () => void }) {
               <p className="text-[8px] uppercase tracking-[.15em] text-slate-700">
                 Available
               </p>
-              <p className="mt-2 font-mono text-xl text-emerald-300">$10.00</p>
+              <p className="mt-2 font-mono text-xl text-emerald-300">
+                ${amount.toFixed(2)}
+              </p>
             </div>
             <button
-              onClick={() => setRequested(true)}
+              onClick={() => void requestWithdrawal()}
+              disabled={loading || amount <= 0}
               className="mt-5 h-10 w-full rounded-md bg-emerald-400 text-[10px] font-bold text-[#07130e] hover:bg-emerald-300"
             >
-              Request withdrawal
+              {loading ? "Requesting…" : "Request withdrawal"}
             </button>
+            {error && <p className="mt-3 text-[9px] text-red-300">{error}</p>}
           </>
         )}
       </div>

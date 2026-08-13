@@ -1,0 +1,22 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { getAdminOverview, isBackendAdmin } from "@/lib/external-api";
+import { SiteHeader } from "@/components/site-header";
+import { AdminDashboard } from "./admin-dashboard";
+export const dynamic = "force-dynamic";
+export const metadata = {
+  title: "Administration",
+  robots: { index: false, follow: false },
+};
+export default async function AdminPage() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/");
+  if (!(await isBackendAdmin(session.user.id))) redirect("/");
+  const data = await getAdminOverview(session.user.id);
+  return (
+    <main className="min-h-screen bg-[#080b0e]">
+      <SiteHeader compact />
+      <AdminDashboard initialData={data} />
+    </main>
+  );
+}

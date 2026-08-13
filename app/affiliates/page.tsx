@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AffiliateDashboard } from "./affiliate-dashboard";
 import { SiteHeader } from "@/components/site-header";
+import { getAffiliateData } from "@/lib/external-api";
+import { AffiliateAccessDenied } from "./access-denied";
 export const metadata: Metadata = {
   title: "Affiliate Dashboard",
   description: "Track referrals, commissions, and withdrawals.",
@@ -11,11 +13,23 @@ export const metadata: Metadata = {
 export default async function AffiliatesPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?callbackUrl=/affiliates");
+  let result;
+  try {
+    result = await getAffiliateData(session.user.id);
+  } catch (error) {
+    result =
+      error instanceof Error && error.message === "API_NOT_CONFIGURED"
+        ? null
+        : undefined;
+  }
   return (
-    <main className="min-h-screen bg-[#080b0e]">
-      <div className="grid-bg pointer-events-none fixed inset-0 opacity-70" />
+    <main className="affiliate-surface min-h-screen bg-[#080b0e]">
       <SiteHeader compact />
-      <AffiliateDashboard />
+      {!result || !result.allowed ? (
+        <AffiliateAccessDenied configured={result?.allowed === false} />
+      ) : (
+        <AffiliateDashboard data={result.data} />
+      )}
     </main>
   );
 }

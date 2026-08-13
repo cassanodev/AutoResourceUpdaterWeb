@@ -25,6 +25,29 @@ body {
     "Segoe UI",
     sans-serif;
 }
+.marketing-surface .text-slate-500 { color: #a5b1c1; }
+.marketing-surface .text-slate-600 { color: #8d9aac; }
+.marketing-surface .text-slate-700 { color: #738196; }
+.marketing-surface .text-\[8px\] { font-size: .6875rem; }
+.marketing-surface .text-\[9px\] { font-size: .75rem; }
+.marketing-surface .text-\[10px\] { font-size: .8125rem; }
+.marketing-surface .text-\[11px\] { font-size: .875rem; }
+.marketing-surface .text-\[12px\] { font-size: .9375rem; }
+.marketing-surface .text-\[13px\] { font-size: 1rem; }
+.account-surface .text-\[8px\], .checkout-surface .text-\[8px\], .affiliate-surface .text-\[8px\] { font-size: .6875rem; }
+.account-surface .text-\[9px\], .checkout-surface .text-\[9px\], .affiliate-surface .text-\[9px\] { font-size: .75rem; }
+.account-surface .text-\[10px\], .checkout-surface .text-\[10px\], .affiliate-surface .text-\[10px\] { font-size: .8125rem; }
+.account-surface .text-\[11px\], .checkout-surface .text-\[11px\], .affiliate-surface .text-\[11px\] { font-size: .875rem; }
+.hero-backdrop {
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 72% 42%, rgba(246,184,74,.08), transparent 38%),
+    linear-gradient(115deg, transparent 48%, rgba(255,255,255,.025) 49%, transparent 50%);
+}
+.hero-backdrop::after { content: ""; position: absolute; inset: auto 8% 9% 42%; height: 1px; background: linear-gradient(90deg, transparent, rgba(246,184,74,.32), transparent); }
+.hero-orbit { position: absolute; display: block; border: 1px solid rgba(246,184,74,.08); border-radius: 50%; transform: rotate(-14deg); }
+.hero-orbit-one { width: 720px; height: 280px; right: -120px; top: 180px; }
+.hero-orbit-two { width: 520px; height: 190px; right: -20px; top: 230px; border-color: rgba(255,255,255,.045); }
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -33,13 +56,7 @@ a {
   font-family: "Arial Narrow", Inter, ui-sans-serif, sans-serif;
   font-stretch: condensed;
 }
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, #000, transparent 82%);
-}
+.grid-bg { background: none; }
 .noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
 }
@@ -58,6 +75,45 @@ a {
 }
 .rise {
   animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.login-surface {
+  background: linear-gradient(180deg, #0b1018 0%, #080b0e 46%);
+}
+.affiliate-surface {
+  background: linear-gradient(180deg, #0b1017 0%, #080b0e 42%);
+}
+.affiliate-surface .text-slate-600 {
+  color: #8492a6;
+}
+.affiliate-surface .text-slate-700 {
+  color: #64748b;
+}
+.affiliate-surface .bg-\[\#0d1217\] {
+  background-color: #111820;
+}
+.account-surface {
+  background: linear-gradient(180deg, #0c1119 0%, #080b0e 44%);
+}
+.account-surface .bg-\[\#0d1217\] {
+  background-color: #131a21;
+}
+.account-surface .text-slate-500 {
+  color: #94a3b8;
+}
+.account-surface .text-slate-600 {
+  color: #7f8da1;
+}
+.account-surface .text-slate-700 {
+  color: #64748b;
+}
+.checkout-surface {
+  background: linear-gradient(180deg, #0b1018 0%, #080b0e 44%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+  .aura-line { animation: none; }
 }
 ::-webkit-scrollbar {
   width: 8px;
