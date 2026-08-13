@@ -124,9 +124,7 @@ export async function createSubscription(input: {
 export async function getSubscriptionPlan(planId: string) {
   const normalizedPlanId = planId.trim();
   if (!/^P-[A-Z0-9]+$/.test(normalizedPlanId))
-    throw new Error(
-      "The PayPal plan ID must begin with P-",
-    );
+    throw new Error("The PayPal plan ID must begin with P-");
 
   const token = await accessToken();
   const response = await fetch(
@@ -139,14 +137,17 @@ export async function getSubscriptionPlan(planId: string) {
   const data = await response.json();
   if (!response.ok)
     throw new Error(data?.message || "Unable to read the PayPal plan");
-  if (data.status !== "ACTIVE") throw new Error("The PayPal plan is not active");
+  if (data.status !== "ACTIVE")
+    throw new Error("The PayPal plan is not active");
 
   const regularCycle = data.billing_cycles?.find(
     (cycle: { tenure_type?: string }) => cycle.tenure_type === "REGULAR",
   );
   const baseAmount = Number(regularCycle?.pricing_scheme?.fixed_price?.value);
   if (!regularCycle?.sequence || !Number.isFinite(baseAmount))
-    throw new Error("The PayPal plan does not have a valid regular billing cycle");
+    throw new Error(
+      "The PayPal plan does not have a valid regular billing cycle",
+    );
 
   return {
     id: normalizedPlanId,
