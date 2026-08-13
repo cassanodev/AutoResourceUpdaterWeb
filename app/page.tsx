@@ -57,10 +57,6 @@ export default async function Home() {
           <SiteHeader />
           <div className="relative z-10 mx-auto grid max-w-[1240px] items-center gap-14 px-5 pb-24 pt-14 lg:grid-cols-[.9fr_1.1fr] lg:px-8 lg:pt-24">
             <div className="rise">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[.055] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[.13em] text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" />
-                Built for FiveM servers
-              </div>
               <h1 className="display text-balance text-[48px] font-bold leading-[.98] tracking-[-.055em] text-white sm:text-[62px] lg:text-[68px]">
                 Update resources.
                 <br />
@@ -250,7 +246,7 @@ export default async function Home() {
         </section>
         <FaqSection />
         <footer className="mx-auto flex max-w-[1240px] flex-col gap-4 px-5 py-9 text-[9px] text-slate-700 sm:flex-row sm:items-center lg:px-8">
-          <span>© 2026 Fragment. Auto Resource Updater.</span>
+          <span>© 2026 Auto Resource Updater.</span>
           <div className="flex flex-wrap gap-4 sm:ml-auto">
             <Link href="/#faq" className="hover:text-slate-400">
               FAQ

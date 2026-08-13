@@ -1,23 +1,12 @@
 export function BrandMark({ className = "" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
+    <img
+      src="/branding/app-logo-64.png"
       className={className}
-      fill="none"
+      alt=""
       aria-hidden="true"
-    >
-      <path
-        d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-      />
-      <path
-        d="M12 2v20M3 7l9 5 9-5"
-        stroke="currentColor"
-        strokeWidth="1"
-        opacity=".35"
-      />
-    </svg>
+      draggable={false}
+    />
   );
 }
 export function DiscordIcon({ className = "" }: { className?: string }) {

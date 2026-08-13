@@ -7,15 +7,16 @@ export async function SiteHeader({ compact = false }: { compact?: boolean }) {
   return (
     <header className="relative z-30 mx-auto flex h-20 w-full max-w-[1240px] items-center px-5 lg:px-8">
       <Link href="/" className="flex items-center gap-3">
-        <span className="grid h-9 w-9 place-items-center rounded-xl border border-amber-300/20 bg-amber-400/10 text-amber-300">
-          <BrandMark className="h-4 w-4" />
+        <span className="relative grid h-10 w-10 place-items-center rounded-xl border border-white/[.1] bg-white/[.035] shadow-[inset_0_1px_rgba(255,255,255,.06)]">
+          <BrandMark className="h-7 w-7 object-contain" />
+          <span className="absolute -bottom-px left-2 right-2 h-px bg-amber-300/70" />
         </span>
         <span>
-          <span className="block text-[13px] font-semibold text-white">
-            Auto Resource Updater
+          <span className="block text-[12px] font-semibold uppercase tracking-[.08em] text-white">
+            Auto Resource <span className="text-amber-300">Updater</span>
           </span>
-          <span className="block text-[8px] font-semibold uppercase tracking-[.22em] text-slate-600">
-            by Fragment
+          <span className="mt-0.5 block text-[7px] font-semibold uppercase tracking-[.24em] text-slate-600">
+            FiveM resource control
           </span>
         </span>
       </Link>
