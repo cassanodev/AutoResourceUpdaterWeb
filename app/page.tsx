@@ -24,8 +24,7 @@ import { FaqSection } from "@/components/faq-section";
 import { HeroCursorTrail } from "@/components/hero-cursor-trail";
 import { Analytics } from "@vercel/analytics/next";
 
-const installer =
-  process.env.NEXT_PUBLIC_INSTALLER_URL || "#download-not-configured";
+const installer = "/downloads";
 const discord =
   process.env.NEXT_PUBLIC_DISCORD_URL || "https://discord.gg/your-server";
 
