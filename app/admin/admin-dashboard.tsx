@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { AdminOverview } from "@/lib/external-api";
+import type { AdminOverview, AdminUserResult } from "@/lib/external-api";
 import {
   BadgeDollarSign,
+  CreditCard,
   LoaderCircle,
+  Search,
   ShieldCheck,
   UserCog,
   Users,
@@ -23,8 +25,8 @@ export function AdminDashboard({
 }) {
   const router = useRouter(),
     [data, setData] = useState(initialData),
-    [tab, setTab] = useState<"affiliates" | "withdrawals" | "admins">(
-      "affiliates",
+    [tab, setTab] = useState<"users" | "affiliates" | "withdrawals" | "admins">(
+      "users",
     ),
     [modal, setModal] = useState<Modal>(null),
     [busy, setBusy] = useState(false),
@@ -61,10 +63,11 @@ export function AdminDashboard({
     }
   };
   const navigation: Array<{
-    id: "affiliates" | "withdrawals" | "admins";
+    id: "users" | "affiliates" | "withdrawals" | "admins";
     label: string;
     Icon: typeof Users;
   }> = [
+    { id: "users", label: "Users", Icon: CreditCard },
     { id: "affiliates", label: "Affiliates", Icon: Users },
     { id: "withdrawals", label: "Withdrawals", Icon: BadgeDollarSign },
   ];
@@ -107,6 +110,7 @@ export function AdminDashboard({
           </button>
         ))}
       </nav>
+      {tab === "users" && <UserSubscriptions />}
       {tab === "affiliates" && (
         <section className="mt-6">
           <Section
@@ -270,6 +274,19 @@ export function AdminDashboard({
       )}
     </div>
   );
+}
+function UserSubscriptions() {
+  const [discordId, setDiscordId] = useState(""), [user, setUser] = useState<AdminUserResult | null>(null), [plan, setPlan] = useState<"weekly" | "monthly" | "six_months" | "yearly">("monthly"), [busy, setBusy] = useState(false), [error, setError] = useState("");
+  const request = async (path: string, body: unknown) => {
+    const response = await fetch(path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Unable to complete action");
+    return result;
+  };
+  const find = async () => { setBusy(true); setError(""); try { const result = await request("/api/admin/users/find", { targetDiscordId: discordId.trim() }); setUser(result.user); } catch (value) { setUser(null); setError(value instanceof Error ? value.message : "Unable to find user"); } finally { setBusy(false); } };
+  const update = async (action: "assign" | "revoke") => { if (!user) return; setBusy(true); setError(""); try { await request("/api/admin/users/subscription", { targetDiscordId: user.discordId, action, plan: action === "assign" ? plan : undefined, reason: "Changed in web administration" }); const result = await request("/api/admin/users/find", { targetDiscordId: user.discordId }); setUser(result.user); } catch (value) { setError(value instanceof Error ? value.message : "Unable to update subscription"); } finally { setBusy(false); } };
+  const plans = [{ id: "weekly", label: "7 days", price: "$4.99" }, { id: "monthly", label: "1 month", price: "$9.99" }, { id: "six_months", label: "6 months", price: "$44.99" }, { id: "yearly", label: "1 year", price: "$79.99" }] as const;
+  return <section className="mt-6"><Section title="User subscriptions" text="Find an account by its exact Discord ID and manage its access." /><div className="rounded-2xl border border-cyan-200/[.1] bg-[#071426]/75 p-5 shadow-[inset_0_1px_rgba(255,255,255,.035)]"><div className="flex gap-3"><label className="relative flex-1"><Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><input value={discordId} onChange={event => setDiscordId(event.target.value.replace(/\D/g, ""))} onKeyDown={event => { if (event.key === "Enter") void find(); }} placeholder="Discord ID" className="h-11 w-full rounded-xl border border-white/10 bg-[#040b18] pl-10 pr-4 text-sm text-white outline-none focus:border-cyan-200/30" /></label><button disabled={busy || discordId.length < 5} onClick={() => void find()} className="rounded-xl bg-cyan-100 px-5 text-xs font-bold text-[#03111b] disabled:opacity-40">{busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : "Find account"}</button></div>{error && <p className="mt-4 rounded-lg border border-red-400/20 bg-red-400/[.06] p-3 text-sm text-red-300">{error}</p>}{user && <div className="mt-6 border-t border-white/[.07] pt-6"><div className="flex flex-wrap items-start justify-between gap-4"><User name={user.discordUsername} id={user.discordId} /><div className="text-right"><p className="text-[10px] uppercase tracking-wider text-slate-500">Current access</p><p className="mt-1 text-sm font-semibold capitalize text-cyan-100">{user.subscription ? `${user.subscription.plan.replaceAll("_", " ")} · ${user.subscription.status}` : user.trial?.status === "active" ? "Free trial" : "No active plan"}</p>{user.subscription?.endsAt && <p className="mt-1 text-xs text-slate-500">Until {new Date(user.subscription.endsAt).toLocaleDateString()}</p>}</div></div><div className="mt-6 grid grid-cols-4 gap-3">{plans.map(item => <button key={item.id} onClick={() => setPlan(item.id)} className={`rounded-xl border p-4 text-left transition ${plan === item.id ? "border-cyan-200/30 bg-cyan-200/[.07]" : "border-white/[.08] bg-white/[.02] hover:border-white/[.14]"}`}><span className="block text-sm font-semibold text-white">{item.label}</span><span className="mt-1 block text-xs text-slate-500">{item.price}</span></button>)}</div><div className="mt-5 flex justify-end gap-3"><button disabled={busy || !user.subscription} onClick={() => void update("revoke")} className="rounded-lg border border-red-400/20 px-4 py-2.5 text-xs font-semibold text-red-300 disabled:opacity-35">Revoke access</button><button disabled={busy} onClick={() => void update("assign")} className="flex min-w-40 items-center justify-center gap-2 rounded-lg bg-cyan-100 px-4 py-2.5 text-xs font-bold text-[#03111b]">{busy && <LoaderCircle className="h-4 w-4 animate-spin" />}Assign plan</button></div></div>}</div></section>;
 }
 function AdminModal({
   modal,

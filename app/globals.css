@@ -416,7 +416,9 @@ a {
   background: linear-gradient(180deg, #0b1018 0%, #080b0e 46%);
 }
 .affiliate-surface {
-  background: linear-gradient(180deg, #0b1017 0%, #080b0e 42%);
+  background:
+    linear-gradient(180deg, rgba(9, 29, 54, .72) 0%, rgba(4, 11, 24, .96) 42%),
+    radial-gradient(circle at 50% 0%, rgba(82, 184, 220, .08), transparent 42%);
 }
 .affiliate-surface .text-slate-600 {
   color: #8492a6;
@@ -425,7 +427,16 @@ a {
   color: #64748b;
 }
 .affiliate-surface .bg-\[\#0d1217\] {
-  background-color: #111820;
+  background-color: rgba(7, 20, 38, .82);
+}
+.affiliate-surface [class*="bg-amber-300"],
+.admin-surface [class*="bg-amber-300"] {
+  background-color: var(--ocean-cyan) !important;
+  color: #03111b !important;
+}
+.admin-surface .bg-\[\#0e1419\],
+.admin-surface .bg-\[\#11171d\] {
+  background-color: rgba(7, 20, 38, .88);
 }
 .account-surface {
   background: linear-gradient(180deg, #0c1119 0%, #080b0e 44%);

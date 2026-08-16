@@ -234,6 +234,24 @@ export async function setBackendAdmin(input: {
     );
   return data;
 }
+
+export type AdminUserResult = {
+  discordId: string; discordUsername: string; discordEmail?: string | null; createdAt: string;
+  subscription: null | { id?: number; provider: string; plan: string; status: string; startsAt?: string | null; endsAt?: string | null; cancelAtPeriodEnd?: boolean };
+  subscriptions: Array<{ id: number; provider: string; plan: string; status: string; startsAt?: string | null; endsAt?: string | null; createdAt: string }>;
+  trial?: null | { status: string; startsAt: string; endsAt: string };
+};
+export async function findAdminUser(input: { adminDiscordId: string; targetDiscordId: string }) {
+  const { response, data } = await signedPost("/api/admin/users/find", input);
+  if (!response.ok) throw new Error(data.error || "Unable to find user");
+  return data as { user: AdminUserResult };
+}
+export async function setAdminUserSubscription(input: { adminDiscordId: string; targetDiscordId: string; action: "assign" | "revoke"; plan?: "weekly" | "monthly" | "six_months" | "yearly"; reason?: string }) {
+  const { response, data } = await signedPost("/api/admin/users/subscription", input);
+  if (!response.ok) throw new Error(data.error || "Unable to update subscription");
+  return data;
+}
+
 export async function getPayPalPlan(plan: PlanId) {
   const response = await fetch(
     `${backend()}/api/billing/paypal/plans/${plan}`,

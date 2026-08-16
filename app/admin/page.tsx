@@ -14,8 +14,8 @@ export default async function AdminPage() {
   if (!(await isBackendAdmin(session.user.id))) redirect("/");
   const data = await getAdminOverview(session.user.id);
   return (
-    <main className="min-h-screen bg-[#080b0e]">
-      <SiteHeader compact />
+    <main className="admin-surface ocean-home min-h-screen bg-[#040b18]">
+      <SiteHeader compact ocean />
       <AdminDashboard initialData={data} />
     </main>
   );
