@@ -9,7 +9,9 @@ type Rule = {
 };
 
 const routes = new Map<string, Rule>([
+  ["health", { method: "GET", authentication: "none" }],
   ["api/auth/discord/login", { method: "GET", authentication: "none" }],
+  ["api/auth/callback/discord", { method: "GET", authentication: "none" }],
   ["api/auth/me", { method: "GET", authentication: "bearer" }],
   ["api/access/status", { method: "GET", authentication: "bearer" }],
   ["api/resources/getResourcesLastVersion", { method: "POST", authentication: "bearer" }],
@@ -17,11 +19,21 @@ const routes = new Map<string, Rule>([
 ]);
 
 function backendOrigin() {
-  const configured = process.env.BACKEND_API_URL?.trim().replace(/\/$/, "");
-  if (!configured) throw new Error("BACKEND_API_URL is not configured");
-  const url = new URL(configured);
+  const configured = (
+    process.env.DESKTOP_BACKEND_API_URL ?? process.env.BACKEND_API_URL
+  )
+    ?.trim()
+    .replace(/\/$/, "");
+  if (!configured) return null;
+
+  let url: URL;
+  try {
+    url = new URL(configured);
+  } catch {
+    return null;
+  }
   if (url.protocol !== "https:" && process.env.NODE_ENV === "production") {
-    throw new Error("BACKEND_API_URL must use HTTPS in production");
+    return null;
   }
   return url.origin;
 }
@@ -57,7 +69,13 @@ async function proxy(
     }
   }
 
-  const target = new URL(`/${route}`, backendOrigin());
+  const origin = backendOrigin();
+  if (!origin) {
+    console.error("[desktop-gateway] backend URL is missing or invalid");
+    return error("The desktop service is not configured", 503);
+  }
+
+  const target = new URL(`/${route}`, origin);
   target.search = request.nextUrl.search;
   const headers = new Headers({ Accept: "application/json" });
   if (authorization) headers.set("Authorization", authorization);
@@ -85,7 +103,7 @@ async function proxy(
 
     const location = upstream.headers.get("location");
     if (location && upstream.status >= 300 && upstream.status < 400) {
-      return NextResponse.redirect(location, upstream.status);
+      return NextResponse.redirect(new URL(location, target), upstream.status);
     }
 
     return new NextResponse(upstream.body, {
