@@ -19,17 +19,19 @@ export function AccountDashboard({ user, account }: { user: { name: string; imag
     : trialActive ? formatDate(account.trial!.expiresAt) : "No access period";
 
   return (
-    <section className="mx-auto max-w-[900px] px-5 pb-24 pt-10 lg:px-8">
-      <header className="flex items-center gap-3 border-b border-white/[.07] pb-7">
-        {user.image ? <img src={user.image} alt="Discord avatar" className="h-11 w-11 rounded-lg" /> : <div className="h-11 w-11 rounded-lg bg-[#5865f2]" />}
+    <section className="relative mx-auto max-w-[980px] px-5 pb-24 pt-10 lg:px-8">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-56 w-3/4 -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,rgba(103,211,235,.075),transparent_68%)]" />
+      <header className="relative flex items-center gap-4 border-b border-cyan-100/[.09] pb-7">
+        {user.image ? <img src={user.image} alt="Discord avatar" className="h-12 w-12 rounded-xl border border-cyan-100/15 shadow-[0_10px_30px_rgba(0,0,0,.25)]" /> : <div className="h-12 w-12 rounded-xl border border-cyan-100/15 bg-[#5865f2]" />}
         <div className="min-w-0">
-          <p className="text-[8px] font-semibold uppercase tracking-[.18em] text-slate-600">Account</p>
-          <h1 className="mt-1 truncate text-xl font-semibold text-white">{user.name}</h1>
+          <p className="text-[9px] font-semibold uppercase tracking-[.2em] text-cyan-200/65">My account</p>
+          <h1 className="mt-1 truncate text-2xl font-semibold tracking-[-.02em] text-white">{user.name}</h1>
         </div>
-        <span className="ml-auto hidden items-center gap-2 text-[9px] text-slate-500 sm:flex"><ShieldCheck className="h-3.5 w-3.5 text-slate-500" />Connected with Discord</span>
+        <span className="ml-auto hidden items-center gap-2 rounded-lg border border-cyan-100/10 bg-cyan-200/[.035] px-3 py-2 text-[9px] text-slate-400 sm:flex"><ShieldCheck className="h-3.5 w-3.5 text-cyan-200/70" />Connected with Discord</span>
       </header>
 
-      <div className="mt-7 overflow-hidden rounded-xl border border-white/[.08] bg-[#0d1217]">
+      <div className="relative mt-7 overflow-hidden rounded-2xl border border-cyan-100/[.1] bg-[#071426]/80 shadow-[inset_0_1px_rgba(255,255,255,.035),0_30px_90px_rgba(0,4,16,.28)] backdrop-blur-xl">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/50 to-transparent" />
         <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center">
           <div className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg border ${paidActive ? "border-emerald-400/20 bg-emerald-400/[.06]" : trialActive ? "border-amber-300/20 bg-amber-400/[.06]" : "border-white/[.08] bg-white/[.025]"}`}>
             {paidActive ? <Check className="h-4 w-4 text-emerald-300" /> : trialActive ? <Clock3 className="h-4 w-4 text-amber-300" /> : <Clock3 className="h-4 w-4 text-slate-500" />}
@@ -56,7 +58,7 @@ export function AccountDashboard({ user, account }: { user: { name: string; imag
                   <p className="text-[10px] font-semibold text-white">Your two-day trial is available</p>
                   <p className="mt-1 text-[9px] text-slate-500">Try every feature without a card or automatic charge.</p>
                 </div>
-                <FreeTrialButton authenticated className="sm:ml-auto inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-amber-300 px-4 text-[9px] font-bold text-[#17120a] hover:bg-amber-200" />
+                <FreeTrialButton authenticated className="sm:ml-auto inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-cyan-100 px-4 text-[9px] font-bold text-[#03111b] transition hover:bg-white" />
               </div>
             ) : trialActive ? (
               <p className="text-[9px] text-slate-400">You can upgrade at any time. Your paid access will be registered independently of the trial.</p>
@@ -64,7 +66,7 @@ export function AccountDashboard({ user, account }: { user: { name: string; imag
               <p className="text-[9px] text-slate-500">Your free trial has already been used. Choose a plan to continue using the application.</p>
             )}
             <div className="mt-4 flex flex-wrap gap-2">
-              <Link href="/#pricing" className="flex h-10 items-center rounded-md border border-amber-300/20 bg-amber-400/[.06] px-4 text-xs font-semibold text-amber-200 hover:bg-amber-400/[.1]">Compare all paid plans</Link>
+              <Link href="/#pricing" className="flex h-10 items-center rounded-lg border border-cyan-200/15 bg-cyan-200/[.045] px-4 text-xs font-semibold text-cyan-100 transition hover:border-cyan-100/25 hover:bg-cyan-200/[.08]">Compare all paid plans</Link>
             </div>
           </div>
         )}

@@ -15,8 +15,8 @@ export default async function AccountPage() {
   if (!session?.user) redirect("/login?callbackUrl=/account");
   const account = await getAccountData(session.user.id, { username: session.user.name, avatarUrl: session.user.image });
   return (
-    <main className="account-surface min-h-screen bg-[#0a0e12]">
-      <SiteHeader compact />
+    <main className="account-surface ocean-home min-h-screen bg-[#040b18]">
+      <SiteHeader compact ocean />
       <AccountDashboard
         user={{
           name: session.user.name ?? "Discord user",

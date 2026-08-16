@@ -439,10 +439,20 @@ a {
   background-color: rgba(7, 20, 38, .88);
 }
 .account-surface {
-  background: linear-gradient(180deg, #0c1119 0%, #080b0e 44%);
+  background:
+    linear-gradient(180deg, rgba(8, 26, 49, .84) 0%, rgba(4, 11, 24, .98) 44%),
+    radial-gradient(circle at 50% 0%, rgba(80, 185, 222, .09), transparent 42%);
 }
 .account-surface .bg-\[\#0d1217\] {
-  background-color: #131a21;
+  background-color: rgba(7, 20, 38, .86);
+}
+.account-surface [class*="bg-amber-300"] {
+  background-color: var(--ocean-cyan) !important;
+  color: #03111b !important;
+}
+.account-surface .bg-\[\#151d24\],
+.account-surface .bg-\[\#141b22\] {
+  background-color: #071426;
 }
 .account-surface .text-slate-500 {
   color: #94a3b8;
