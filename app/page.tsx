@@ -5,11 +5,8 @@ import {
   Check,
   ChevronRight,
   Clock3,
-  Code2,
   Download,
-  FolderSync,
   Gamepad2,
-  History,
   ShieldCheck,
   Users,
 } from "lucide-react";
@@ -23,6 +20,7 @@ import { EfficiencyComparison } from "@/components/efficiency-comparison";
 import { FaqSection } from "@/components/faq-section";
 import { HeroCursorTrail } from "@/components/hero-cursor-trail";
 import { Analytics } from "@vercel/analytics/next";
+import { WorkflowSteps } from "@/components/workflow-steps";
 
 const installer = "/downloads";
 const discord =
@@ -42,34 +40,34 @@ export default async function Home() {
   );
   return (
     <>
-      <main className="marketing-surface min-h-screen overflow-hidden bg-[#080b0e]">
-        <section className="relative min-h-[780px] border-b border-white/[.06]">
+      <main className="ocean-home marketing-surface min-h-screen overflow-hidden">
+        <section className="ocean-hero relative min-h-screen">
           <div
-            className="hero-backdrop pointer-events-none absolute inset-0"
+            className="ocean-hero-light pointer-events-none absolute inset-0"
             aria-hidden="true"
-          >
-            <span className="hero-orbit hero-orbit-one" />
-            <span className="hero-orbit hero-orbit-two" />
-          </div>
+          />
           <HeroCursorTrail />
-          <div className="noise pointer-events-none absolute inset-0 opacity-[.025]" />
-          <SiteHeader />
-          <div className="relative z-10 mx-auto grid max-w-[1240px] items-center gap-14 px-5 pb-24 pt-14 lg:grid-cols-[.9fr_1.1fr] lg:px-8 lg:pt-24">
+          <div className="noise pointer-events-none absolute inset-0 opacity-[.018]" />
+          <SiteHeader ocean />
+          <div className="relative z-10 mx-auto grid max-w-[1240px] items-center gap-12 px-5 pb-20 pt-10 lg:min-h-[calc(100svh-80px)] lg:grid-cols-[.88fr_1.12fr] lg:px-8 lg:py-10">
             <div className="rise">
-              <h1 className="display text-balance text-[48px] font-bold leading-[.98] tracking-[-.055em] text-white sm:text-[62px] lg:text-[68px]">
-                Update resources.
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/15 bg-blue-100/[.035] px-3 py-2 text-[8px] font-semibold uppercase tracking-[.18em] text-blue-100/75 shadow-[inset_0_1px_rgba(255,255,255,.05)] backdrop-blur-xl">
+                <span className="h-1.5 w-1.5 rounded-full bg-teal-300 shadow-[0_0_12px_rgba(94,234,212,.9)]" />
+                FiveM updates, under control
+              </div>
+              <h1 className="display mt-7 text-balance text-[48px] font-bold leading-[.98] tracking-[-.055em] text-white sm:text-[62px] lg:text-[68px]">
+                Update safely.
                 <br />
-                <span className="text-slate-500">Keep your config.</span>
+                <span className="ocean-title-shine">Stay in control.</span>
               </h1>
-              <p className="mt-6 max-w-[520px] text-[14px] leading-7 text-slate-500">
-                A safer Windows workspace for managing FiveM resources. Review
-                every change, preserve configuration, and roll back with
-                confidence.
+              <p className="mt-6 max-w-[520px] text-[12px] leading-7 text-slate-400">
+                Review what changed, preserve your configuration and decide what
+                reaches your server—with a Restore Point ready if you need it.
               </p>
-              <div className="mt-9 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <a
                   href={installer}
-                  className="group flex h-12 items-center gap-3 rounded-lg bg-amber-300 px-5 text-[11px] font-bold text-[#17120a] shadow-[0_15px_45px_rgba(246,184,74,.15)] transition hover:-translate-y-0.5 hover:bg-amber-200"
+                  className="ocean-primary group flex h-12 items-center gap-3 rounded-xl px-5 text-[11px] font-bold transition hover:-translate-y-0.5"
                 >
                   <Download className="h-4 w-4" />
                   Download for Windows
@@ -77,100 +75,74 @@ export default async function Home() {
                 </a>
                 <Link
                   href="#features"
-                  className="flex h-12 items-center gap-2 rounded-lg border border-white/10 bg-white/[.035] px-5 text-[11px] font-semibold text-slate-300 transition hover:bg-white/[.07]"
+                  className="ocean-secondary flex h-12 items-center gap-2 rounded-xl px-5 text-[11px] font-semibold text-slate-200 transition hover:-translate-y-0.5"
                 >
                   See how it works
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
-              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-[9px] text-slate-600">
+              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[9px] text-slate-500">
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                  <ShieldCheck className="h-3.5 w-3.5 text-teal-300" />
                   Restore Points before every update
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Gamepad2 className="h-3.5 w-3.5 text-amber-400" />
+                  <Gamepad2 className="h-3.5 w-3.5 text-cyan-200" />
                   Ready for the next generation
                 </span>
               </div>
             </div>
-            <div className="rise [animation-delay:120ms]">
-              <ProductPreview />
+            <div className="rise relative mx-auto w-full max-w-[680px] [animation-delay:120ms]">
+              <div className="ocean-preview relative rounded-[22px] border border-blue-100/10 bg-[#071329]/75 p-2 shadow-[0_35px_90px_rgba(0,4,15,.48)] backdrop-blur-xl">
+                <ProductPreview />
+              </div>
             </div>
           </div>
         </section>
-        <section
-          id="features"
-          className="relative mx-auto max-w-[1240px] px-5 py-28 lg:px-8"
-        >
-          <div className="mb-14 max-w-2xl">
-            <p className="text-[9px] font-bold uppercase tracking-[.22em] text-amber-400">
-              A controlled update workflow
-            </p>
-            <h2 className="display mt-4 text-balance text-4xl font-bold tracking-[-.045em] text-white">
-              Know what changes before it reaches your server.
-            </h2>
-            <p className="mt-4 text-[13px] leading-6 text-slate-500">
-              Built around the realities of modified GTA servers: custom values,
-              protected assets, changing manifests, and updates you may need to
-              undo.
-            </p>
-          </div>
-          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-            <Feature
-              icon={Code2}
-              title="Config-aware merge"
-              text="Preserves your configured values while bringing in new options from the update."
-            />
-            <Feature
-              icon={FolderSync}
-              title="Visual review"
-              text="Browse changed folders and compare the installed file with the final result."
-            />
-            <Feature
-              icon={History}
-              title="Restore Points"
-              text="Every applied update keeps a local copy of the state it replaces."
-            />
-            <Feature
-              icon={ShieldCheck}
-              title="Protected assets"
-              text="Binary and encrypted files are recognized and handled without unsafe parsing."
-            />
+        <section id="features" className="relative px-5 py-28 lg:px-8">
+          <div className="relative mx-auto max-w-[1240px]">
+            <div className="mx-auto max-w-3xl text-center">
+              <div>
+                <p className="ocean-kicker">Workflow</p>
+                <h2 className="display mt-5 text-balance text-4xl font-bold tracking-[-.045em] text-white sm:text-5xl">
+                  One clear path from folder to finished update.
+                </h2>
+              </div>
+              <p className="mx-auto mt-5 max-w-2xl text-[12px] leading-7 text-slate-400">
+                A consistent, visible process. Each step shows what you provide,
+                what the app prepares and where you remain in control.
+              </p>
+            </div>
+            <WorkflowSteps />
           </div>
         </section>
-        <section
-          id="why"
-          className="relative border-y border-white/[.06] bg-[#0a0e12]"
-        >
-          <div className="mx-auto grid max-w-[1240px] items-center gap-12 px-5 py-20 lg:grid-cols-[.75fr_1.25fr] lg:px-8">
-            <div>
-              <p className="text-[9px] font-bold uppercase tracking-[.22em] text-amber-400">
-                Why use it?
-              </p>
-              <h2 className="display mt-4 text-balance text-4xl font-bold tracking-[-.045em] text-white">
-                Update resources without the busywork.
+        <section id="why" className="relative px-5 py-28 lg:px-8">
+          <div className="ocean-glass mx-auto max-w-[1240px] rounded-[30px] p-6 sm:p-10 lg:p-14">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="ocean-kicker">Why use it?</p>
+              <h2 className="display mt-5 text-balance text-4xl font-bold tracking-[-.045em] text-white sm:text-5xl">
+                Spend your attention on the server, not repetitive file checks.
               </h2>
-              <p className="mt-5 max-w-lg text-[13px] leading-7 text-slate-500">
-                Compare every changed file, preserve your configuration and
-                review the result in seconds.
+              <p className="mx-auto mt-5 max-w-2xl text-[12px] leading-7 text-slate-400">
+                Ten files can turn into thirty minutes of careful manual work.
+                Let the system prepare them together, then spend your time on
+                the decisions that actually matter.
               </p>
-              <div className="mt-7 flex flex-wrap gap-2">
+              <div className="mt-7 flex flex-wrap justify-center gap-2">
                 {[
                   "See every change",
                   "Keep your config",
                   "Restore anytime",
                 ].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/[.08] bg-white/[.025] px-3 py-2 text-[11px] font-medium text-slate-400"
-                  >
+                  <span key={item} className="ocean-chip">
                     {item}
                   </span>
                 ))}
               </div>
             </div>
-            <EfficiencyComparison />
+            <div className="mx-auto mt-10 max-w-4xl">
+              <EfficiencyComparison />
+            </div>
           </div>
         </section>
         <PricingSection
@@ -178,18 +150,13 @@ export default async function Home() {
           hasActivePlan={hasActivePlan}
           trialAvailable={!session?.user || trialAvailable}
         />
-        <section
-          id="referrals"
-          className="relative border-y border-white/[.06] bg-[#0b0f13]"
-        >
-          <div className="relative mx-auto grid max-w-[1240px] gap-12 px-5 py-24 lg:grid-cols-[1fr_.9fr] lg:px-8">
+        <section id="referrals" className="relative px-5 py-28 lg:px-8">
+          <div className="ocean-glass relative mx-auto grid max-w-[1240px] gap-12 overflow-hidden rounded-[30px] p-7 sm:p-10 lg:grid-cols-[1fr_.9fr] lg:p-14">
             <div>
-              <div className="mb-5 grid h-11 w-11 place-items-center rounded-xl border border-amber-300/20 bg-amber-400/10">
-                <Users className="h-5 w-5 text-amber-300" />
+              <div className="mb-5 grid h-11 w-11 place-items-center rounded-xl border border-cyan-200/15 bg-cyan-200/[.06]">
+                <Users className="h-5 w-5 text-cyan-200" />
               </div>
-              <p className="text-[9px] font-bold uppercase tracking-[.22em] text-amber-400">
-                Affiliate program
-              </p>
+              <p className="ocean-kicker">Affiliate program</p>
               <h2 className="display mt-4 max-w-xl text-4xl font-bold tracking-[-.045em] text-white">
                 Recommend a tool you trust.
                 <br />
@@ -213,7 +180,7 @@ export default async function Home() {
                 </a>
                 <Link
                   href="/affiliates"
-                  className="flex h-11 items-center gap-2 rounded-lg border border-white/10 px-4 text-[10px] font-semibold text-slate-300 hover:bg-white/[.04]"
+                  className="ocean-secondary flex h-11 items-center gap-2 rounded-xl px-4 text-[10px] font-semibold text-slate-200"
                 >
                   View affiliate dashboard
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -231,7 +198,7 @@ export default async function Home() {
                 label="Every plan length"
                 note="Weekly, monthly, six-month and annual"
               />
-              <div className="sm:col-span-2 flex gap-3 rounded-xl border border-white/[.07] bg-white/[.025] p-4">
+              <div className="sm:col-span-2 flex gap-3 rounded-2xl border border-white/[.07] bg-white/[.025] p-4 backdrop-blur-xl">
                 <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" />
                 <p className="text-[10px] leading-5 text-slate-500">
                   Commissions remain pending through the refund window, then
@@ -259,25 +226,6 @@ export default async function Home() {
       </main>
       <Analytics />
     </>
-  );
-}
-function Feature({
-  icon: Icon,
-  title,
-  text,
-}: {
-  icon: typeof Code2;
-  title: string;
-  text: string;
-}) {
-  return (
-    <article className="rounded-xl border border-white/[.07] bg-[#0d1217] p-5 transition hover:-translate-y-1 hover:border-white/[.12]">
-      <div className="grid h-9 w-9 place-items-center rounded-lg bg-white/[.035]">
-        <Icon className="h-4 w-4 text-amber-400" />
-      </div>
-      <h3 className="mt-5 text-[12px] font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-[10px] leading-5 text-slate-600">{text}</p>
-    </article>
   );
 }
 function Reward({

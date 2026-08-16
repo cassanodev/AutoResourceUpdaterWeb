@@ -14,6 +14,7 @@ const routes = new Map<string, Rule>([
   ["api/auth/callback/discord", { method: "GET", authentication: "none" }],
   ["api/auth/me", { method: "GET", authentication: "bearer" }],
   ["api/access/status", { method: "GET", authentication: "bearer" }],
+  ["api/resources/getDefaultRepositories", { method: "POST", authentication: "bearer" }],
   ["api/resources/getResourcesLastVersion", { method: "POST", authentication: "bearer" }],
   ["api/resources/prepareUpdate", { method: "POST", authentication: "bearer" }],
 ]);

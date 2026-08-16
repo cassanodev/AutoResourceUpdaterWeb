@@ -19,5 +19,17 @@ export function GET() {
     );
   }
 
+  // A versioned GitHub asset URL is normalized to the latest published release,
+  // so Vercel does not need an environment-variable change for every version.
+  if (installer.hostname === "github.com") {
+    const match = installer.pathname.match(
+      /^\/([^/]+)\/([^/]+)\/releases\/download\/[^/]+\/([^/]+)$/,
+    );
+    if (match) {
+      const [, owner, repository, asset] = match;
+      installer.pathname = `/${owner}/${repository}/releases/latest/download/${asset}`;
+    }
+  }
+
   return NextResponse.redirect(installer, 307);
 }
