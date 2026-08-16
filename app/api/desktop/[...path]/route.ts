@@ -78,7 +78,7 @@ async function proxy(
 
   const target = new URL(`/${route}`, origin);
   target.search = request.nextUrl.search;
-  const headers = new Headers({ Accept: "application/json" });
+  const headers = new Headers({ Accept: request.headers.get("accept") || "application/json" });
   if (authorization) headers.set("Authorization", authorization);
   const contentType = request.headers.get("content-type");
   if (contentType) headers.set("Content-Type", contentType);
