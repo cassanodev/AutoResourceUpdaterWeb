@@ -4,7 +4,7 @@ const api = () =>
 async function accessToken() {
   const id = process.env.PAYPAL_CLIENT_ID;
   const secret = process.env.PAYPAL_CLIENT_SECRET;
-  if (!id || !secret) throw new Error("PayPal Sandbox is not configured");
+  if (!id || !secret) throw new Error("PayPal is not configured");
   const response = await fetch(`${api()}/v1/oauth2/token`, {
     method: "POST",
     headers: {
@@ -16,44 +16,6 @@ async function accessToken() {
   });
   if (!response.ok) throw new Error("PayPal authentication failed");
   return ((await response.json()) as { access_token: string }).access_token;
-}
-export async function createOrder(input: {
-  amount: number;
-  plan: string;
-  userId: string;
-  discountCode?: string;
-}) {
-  const token = await accessToken();
-  const response = await fetch(`${api()}/v2/checkout/orders`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      "PayPal-Request-Id": crypto.randomUUID(),
-    },
-    body: JSON.stringify({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          reference_id: input.plan,
-          custom_id: input.userId,
-          description: `Auto Resource Updater - ${input.plan}`,
-          amount: { currency_code: "USD", value: input.amount.toFixed(2) },
-          invoice_id: `ARU-${Date.now()}`,
-          soft_descriptor: "RESOURCEUPDATER",
-        },
-      ],
-      application_context: {
-        shipping_preference: "NO_SHIPPING",
-        user_action: "PAY_NOW",
-      },
-    }),
-    cache: "no-store",
-  });
-  const data = await response.json();
-  if (!response.ok)
-    throw new Error(data?.message || "Unable to create PayPal order");
-  return data as { id: string };
 }
 
 export async function createSubscription(input: {
