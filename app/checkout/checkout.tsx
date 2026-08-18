@@ -84,8 +84,8 @@ export function Checkout({
               Subscription approved
             </h1>
             <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-6 text-slate-400">
-              PayPal is confirming your subscription. Your account will
-              update automatically.
+              PayPal is confirming your subscription. Your account will update
+              automatically.
             </p>
             <Link
               href="/account"
@@ -125,9 +125,7 @@ export function Checkout({
                 <p className="font-mono text-2xl font-semibold leading-none text-white">
                   ${plan.price.toFixed(2)}
                 </p>
-                <p className="mt-1 text-[10px] text-slate-500">
-                  {plan.suffix}
-                </p>
+                <p className="mt-1 text-[10px] text-slate-500">{plan.suffix}</p>
               </div>
             </div>
 
@@ -274,7 +272,12 @@ function PaymentOptions({
         </div>
       )}
       <PayPalScriptProvider
-        options={{ clientId, currency: "USD", intent: "subscription" }}
+        options={{
+          clientId,
+          currency: "USD",
+          vault: true,
+          intent: "subscription",
+        }}
       >
         <PayPalButtons
           disabled={disabled}
