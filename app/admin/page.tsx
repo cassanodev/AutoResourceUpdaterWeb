@@ -15,7 +15,7 @@ export default async function AdminPage() {
   const data = await getAdminOverview(session.user.id);
   return (
     <main className="admin-surface ocean-home min-h-screen bg-[#040b18]">
-      <SiteHeader compact ocean />
+      <SiteHeader />
       <AdminDashboard initialData={data} />
     </main>
   );

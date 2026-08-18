@@ -2,13 +2,7 @@ import Link from "next/link";
 import { ChevronDown, LogOut, UserRound } from "lucide-react";
 import { auth, signOut } from "@/auth";
 import { BrandMark } from "./brand";
-export async function SiteHeader({
-  compact = false,
-  ocean = false,
-}: {
-  compact?: boolean;
-  ocean?: boolean;
-}) {
+export async function SiteHeader() {
   const session = await auth();
   return (
     <header className="relative z-30 mx-auto flex h-20 w-full max-w-[1240px] items-center px-5 lg:px-8">
@@ -16,13 +10,13 @@ export async function SiteHeader({
         <span className="relative grid h-10 w-10 place-items-center rounded-xl border border-white/[.1] bg-white/[.035] shadow-[inset_0_1px_rgba(255,255,255,.06)]">
           <BrandMark className="h-7 w-7 object-contain" />
           <span
-            className={`absolute -bottom-px left-2 right-2 h-px ${ocean ? "bg-cyan-200/70" : "bg-amber-300/70"}`}
+            className={`absolute -bottom-px left-2 right-2 h-px bg-cyan-200/70}`}
           />
         </span>
         <span>
           <span className="block text-[12px] font-semibold uppercase tracking-[.08em] text-white">
             Auto Resource{" "}
-            <span className={ocean ? "text-cyan-200" : "text-amber-300"}>
+            <span className="text-cyan-200">
               Updater
             </span>
           </span>
@@ -105,9 +99,9 @@ export async function SiteHeader({
         )}
         <Link
           href="/affiliates"
-          className={`ml-1 hidden rounded-md border px-3.5 py-2 text-[10px] font-semibold sm:block ${compact ? (ocean ? "border-cyan-200/20 bg-cyan-200/[.07] text-cyan-100" : "border-amber-300/20 bg-amber-400/[.07] text-amber-200") : "border-white/10 text-slate-400"}`}
+          className={`ml-1 hidden rounded-md border px-3.5 py-2 text-[10px] font-semibold sm:block border-cyan-200/20 bg-cyan-200/[.07] text-cyan-100`}
         >
-          Affiliate dashboard
+          Affiliate dashboards
         </Link>
       </nav>
     </header>

@@ -48,7 +48,7 @@ export default async function Home() {
           />
           <HeroCursorTrail />
           <div className="noise pointer-events-none absolute inset-0 opacity-[.018]" />
-          <SiteHeader ocean />
+          <SiteHeader />
           <div className="relative z-10 mx-auto grid max-w-[1240px] items-center gap-12 px-5 pb-20 pt-10 lg:min-h-[calc(100svh-80px)] lg:grid-cols-[.88fr_1.12fr] lg:px-8 lg:py-10">
             <div className="rise">
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/15 bg-blue-100/[.035] px-3 py-2 text-[8px] font-semibold uppercase tracking-[.18em] text-blue-100/75 shadow-[inset_0_1px_rgba(255,255,255,.05)] backdrop-blur-xl">

@@ -24,7 +24,7 @@ export default async function AffiliatesPage() {
   }
   return (
     <main className="affiliate-surface ocean-home min-h-screen bg-[#040b18]">
-      <SiteHeader compact ocean />
+      <SiteHeader />
       {!result || !result.allowed ? (
         <AffiliateAccessDenied configured={result?.allowed === false} />
       ) : (

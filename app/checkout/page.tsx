@@ -20,7 +20,7 @@ export default async function CheckoutPage({
   const hasActivePlan = account?.subscription?.status === "active";
   return (
     <main className="checkout-surface min-h-screen bg-[#0a0e12]">
-      <SiteHeader compact />
+      {/* <SiteHeader /> */}
       {plan && !hasActivePlan ? (
         <Checkout
           plan={plan}

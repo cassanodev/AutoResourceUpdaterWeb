@@ -17,7 +17,7 @@ export default async function LoginPage({
   const destination = callbackUrl?.startsWith("/") ? callbackUrl : "/account";
   return (
     <main className="login-surface min-h-screen bg-[#080b0e]">
-      <SiteHeader compact />
+      <SiteHeader />
       <section className="mx-auto grid min-h-[calc(100vh-80px)] max-w-[1240px] place-items-center px-5 pb-20">
         <div className="w-full max-w-[440px] rounded-2xl border border-white/[.13] bg-[#121920] p-8 text-center shadow-[0_35px_100px_rgba(0,0,0,.55)]">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl border border-amber-300/20 bg-amber-400/10">

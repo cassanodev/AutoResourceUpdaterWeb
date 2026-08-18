@@ -49,7 +49,7 @@ export function PricingSection({
           )}
         </div>
 
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-4 z-1">
           {(Object.keys(plans) as PlanId[]).map((id) => (
             <PlanCard key={id} id={id} disabled={hasActivePlan} />
           ))}
