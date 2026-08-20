@@ -271,55 +271,58 @@ function PaymentOptions({
           Preparing your subscription…
         </div>
       )}
-      <PayPalScriptProvider
-        options={{
-          clientId,
-          currency: "USD",
-          vault: true,
-          intent: "subscription",
-        }}
-      >
-        <PayPalButtons
-          disabled={disabled}
-          fundingSource="paypal"
-          style={{
-            layout: "horizontal",
-            color: "blue",
-            shape: "pill",
-            height: 44,
-            label: "subscribe",
+      <div className="min-h-[44px] overflow-hidden rounded-xl">
+        <PayPalScriptProvider
+          options={{
+            clientId,
+            currency: "USD",
+            vault: true,
+            intent: "subscription",
+            components: "buttons",
+            "enable-funding": "card,venmo",
           }}
-          forceReRender={[plan.id, code, disabled]}
-          onClick={() => {
-            setError("");
-            setBusy(true);
-          }}
-          createSubscription={async () => {
-            const response = await fetch("/api/paypal/subscriptions", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                plan: plan.id,
-                discountCode: code,
-                termsAccepted: true,
-              }),
-            });
-            const data = await response.json();
-            if (!response.ok)
-              throw new Error(data.error || "Unable to create subscription");
-            return data.id;
-          }}
-          onApprove={async () => {
-            setBusy(false);
-            onSuccess();
-          }}
-          onCancel={() => setBusy(false)}
-          onError={(value) => {
-            setBusy(false);
-            setError(value instanceof Error ? value.message : String(value));
-          }}
-        />
-      </PayPalScriptProvider>
+        >
+          <PayPalButtons
+            disabled={disabled}
+            style={{
+              layout: "vertical",
+              color: "blue",
+              shape: "pill",
+              height: 44,
+              label: "subscribe",
+            }}
+            forceReRender={[plan.id, code, disabled]}
+            onClick={() => {
+              setError("");
+              setBusy(true);
+            }}
+            createSubscription={async () => {
+              const response = await fetch("/api/paypal/subscriptions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  plan: plan.id,
+                  discountCode: code,
+                  termsAccepted: true,
+                }),
+              });
+              const data = await response.json();
+              if (!response.ok)
+                throw new Error(data.error || "Unable to create subscription");
+              return data.id;
+            }}
+            onApprove={async () => {
+              setBusy(false);
+              onSuccess();
+            }}
+            onCancel={() => setBusy(false)}
+            onError={(value) => {
+              setBusy(false);
+              setError(value instanceof Error ? value.message : String(value));
+            }}
+          />
+        </PayPalScriptProvider>
+      </div>
       {error && <p className="mt-2 text-[12px] text-red-300/90">{error}</p>}
     </div>
   );
