@@ -271,7 +271,14 @@ function PaymentOptions({
           Preparing your subscription…
         </div>
       )}
-      <div className="min-h-[44px] overflow-hidden rounded-xl">
+      {/*
+        El SDK de PayPal siempre renderiza un footer blanco tipo
+        "Powered by PayPal" dentro de su propio iframe — no es
+        editable desde nuestro CSS (cross-origin). En vez de pelear
+        contra eso, lo enmarcamos como una tarjeta clara intencional,
+        con padding blanco alrededor para que se vea a propósito.
+      */}
+      <div className="rounded-2xl bg-white p-3 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
         <PayPalScriptProvider
           options={{
             clientId,
