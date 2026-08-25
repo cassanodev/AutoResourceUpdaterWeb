@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
+
+const bodyFont = Geist({ subsets: ["latin"], variable: "--font-body" });
+const displayFont = Manrope({ subsets: ["latin"], variable: "--font-display" });
+const monoFont = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://autoresourceupdater.com";
 export const metadata: Metadata = {
@@ -29,15 +34,15 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 export const viewport: Viewport = {
-  themeColor: "#080b0e",
+  themeColor: "#040816",
   colorScheme: "dark",
 };
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body>
+    <html lang="en" data-scroll-behavior="smooth" className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable}`}>
+      <body className="font-sans">
         {children}
       </body>
     </html>

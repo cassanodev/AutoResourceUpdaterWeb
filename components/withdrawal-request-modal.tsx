@@ -59,16 +59,16 @@ export function WithdrawalRequestModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] grid place-items-center bg-[#05070a]/80 p-5 backdrop-blur-md"
+      className="fixed inset-0 z-[100] grid place-items-center bg-[#01040c]/85 p-5"
       role="dialog"
       aria-modal="true"
       aria-labelledby="withdrawal-title"
     >
-      <div className="w-full max-w-[440px] overflow-hidden rounded-xl border border-white/[.09] bg-[#10151b] shadow-[0_24px_80px_rgba(0,0,0,.55)]">
+      <div className="premium-panel page-enter w-full max-w-[440px] overflow-hidden rounded-[24px]">
         <header className="flex items-center justify-between border-b border-white/[.07] px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center rounded-lg border border-white/[.08] bg-white/[.035] text-slate-300">
-              <WalletCards className="h-[18px] w-[18px]" />
+            <div className="premium-icon h-9 w-9 rounded-[11px]">
+              <WalletCards strokeWidth={1.5} className="h-[18px] w-[18px]" />
             </div>
             <div>
               <h2
@@ -87,7 +87,7 @@ export function WithdrawalRequestModal({
             onClick={onClose}
             disabled={loading}
             aria-label="Close"
-            className="grid h-8 w-8 place-items-center rounded-md text-slate-500 transition hover:bg-white/[.05] hover:text-slate-200 disabled:opacity-40"
+            className="tap-control grid h-8 w-8 place-items-center rounded-lg text-slate-500 transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/[.05] hover:text-slate-200 disabled:opacity-40"
           >
             <X className="h-4 w-4" />
           </button>
@@ -95,8 +95,8 @@ export function WithdrawalRequestModal({
 
         {requested !== null ? (
           <div className="px-6 py-8 text-center">
-            <div className="mx-auto grid h-11 w-11 place-items-center rounded-full border border-amber-300/20 bg-amber-300/[.07] text-amber-200">
-              <Check className="h-5 w-5" />
+            <div className="mx-auto grid h-11 w-11 place-items-center rounded-[13px] bg-teal-300/[.07] text-teal-300 shadow-[0_0_0_1px_rgba(115,215,205,.16)]">
+              <Check strokeWidth={2} className="h-5 w-5" />
             </div>
             <h3 className="mt-4 text-lg font-semibold text-white">
               Request submitted
@@ -108,14 +108,14 @@ export function WithdrawalRequestModal({
             <button
               type="button"
               onClick={onClose}
-              className="mt-6 h-10 rounded-lg border border-white/[.1] bg-white/[.04] px-5 text-sm font-medium text-slate-200 transition hover:bg-white/[.07]"
+              className="ocean-secondary mt-6 h-10 rounded-xl px-5 text-sm font-medium text-slate-200"
             >
               Close
             </button>
           </div>
         ) : (
           <div className="p-5">
-            <div className="mb-5 flex items-end justify-between rounded-lg border border-white/[.07] bg-[#0b0f14] px-4 py-3">
+            <div className="premium-card mb-5 flex items-end justify-between rounded-2xl px-4 py-3">
               <div>
                 <p className="text-[11px] font-medium uppercase tracking-[.12em] text-slate-500">
                   Available
@@ -132,7 +132,7 @@ export function WithdrawalRequestModal({
                 <span className="text-xs font-medium text-slate-300">
                   Amount
                 </span>
-                <div className="mt-2 flex h-11 items-center rounded-lg border border-white/[.1] bg-[#090d11] px-3 focus-within:border-amber-300/35">
+                <div className="premium-input mt-2 flex h-11 items-center rounded-xl px-3">
                   <span className="mr-2 text-sm text-slate-500">$</span>
                   <input
                     type="number"
@@ -151,7 +151,7 @@ export function WithdrawalRequestModal({
                 <span className="text-xs font-medium text-slate-300">
                   Payment method
                 </span>
-                <div className="mt-2 flex h-11 items-center justify-between rounded-lg border border-white/[.1] bg-[#090d11] px-3">
+                <div className="premium-input mt-2 flex h-11 items-center justify-between rounded-xl px-3">
                   <span className="text-sm font-medium text-slate-200">
                     PayPal
                   </span>
@@ -186,10 +186,10 @@ export function WithdrawalRequestModal({
                           setReferenceType(value);
                           setReference("");
                         }}
-                        className={`flex h-10 items-center justify-center gap-2 rounded-lg border text-xs font-medium transition ${
+                        className={`tap-control flex h-10 items-center justify-center gap-2 rounded-xl text-xs font-medium transition-[color,background-color,box-shadow,scale] duration-150 ease-out ${
                           active
-                            ? "border-amber-300/30 bg-amber-300/[.07] text-amber-100"
-                            : "border-white/[.08] bg-[#090d11] text-slate-400 hover:border-white/[.14] hover:text-slate-200"
+                            ? "bg-blue-200/[.08] text-blue-100 shadow-[0_0_0_1px_rgba(168,192,255,.2)]"
+                            : "bg-[#060d1b] text-slate-400 shadow-[0_0_0_1px_rgba(255,255,255,.08)] hover:bg-white/[.035] hover:text-slate-200"
                         }`}
                       >
                         <Icon className="h-3.5 w-3.5" />
@@ -213,7 +213,7 @@ export function WithdrawalRequestModal({
                       ? "name@example.com"
                       : "https://paypal.me/username"
                   }
-                  className="mt-2 h-11 w-full rounded-lg border border-white/[.1] bg-[#090d11] px-3 text-sm text-white outline-none placeholder:text-slate-700 focus:border-amber-300/35"
+                  className="premium-input mt-2 h-11 w-full rounded-xl px-3 text-sm text-white placeholder:text-slate-700"
                 />
               </label>
             </div>
@@ -232,7 +232,7 @@ export function WithdrawalRequestModal({
                 type="button"
                 onClick={onClose}
                 disabled={loading}
-                className="h-10 px-2 text-sm font-medium text-slate-500 transition hover:text-slate-200 disabled:opacity-40"
+                className="tap-control h-10 rounded-lg px-3 text-sm font-medium text-slate-500 transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/[.025] hover:text-slate-200 disabled:opacity-40"
               >
                 Cancel
               </button>
@@ -245,7 +245,7 @@ export function WithdrawalRequestModal({
                   Number(amount) > available ||
                   !reference.trim()
                 }
-                className="flex h-10 min-w-40 items-center justify-center gap-2 rounded-lg bg-amber-300 px-4 text-sm font-semibold text-[#171306] transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-35"
+                className="ocean-primary flex h-10 min-w-40 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-35"
               >
                 {loading ? (
                   <>

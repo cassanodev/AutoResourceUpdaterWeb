@@ -1,75 +1,51 @@
 import Link from "next/link";
-import { ChevronDown, LogOut, UserRound } from "lucide-react";
+import { ArrowUpRight, ChevronDown, LogOut, UserRound } from "lucide-react";
 import { auth, signOut } from "@/auth";
 import { BrandMark } from "./brand";
+
 export async function SiteHeader() {
   const session = await auth();
   return (
-    <header className="relative z-30 mx-auto flex h-20 w-full max-w-[1240px] items-center px-5 lg:px-8">
-      <Link href="/" className="flex items-center gap-3">
-        <span className="relative grid h-10 w-10 place-items-center rounded-xl border border-white/[.1] bg-white/[.035] shadow-[inset_0_1px_rgba(255,255,255,.06)]">
-          <BrandMark className="h-7 w-7 object-contain" />
-          <span
-            className={`absolute -bottom-px left-2 right-2 h-px bg-cyan-200/70}`}
-          />
+    <header className="site-header relative z-50 mx-auto flex h-[76px] w-full max-w-[1280px] items-center px-5 lg:px-8">
+      <Link href="/" className="brand-lockup group flex items-center gap-3.5" aria-label="Auto Resource Updater home">
+        <span className="brand-mark relative grid h-10 w-10 place-items-center rounded-[13px] bg-white/[.035]">
+          <BrandMark className="h-7 w-7 object-contain outline outline-1 -outline-offset-1 outline-white/10" />
+          <span className="absolute inset-x-2 bottom-0 h-px origin-center scale-x-50 bg-gradient-to-r from-transparent via-blue-200/80 to-transparent opacity-0 transition-[scale,opacity] duration-150 ease-out group-hover:scale-x-100 group-hover:opacity-100" />
         </span>
-        <span>
-          <span className="block text-[12px] font-semibold uppercase tracking-[.08em] text-white">
-            Auto Resource{" "}
-            <span className="text-cyan-200">
-              Updater
-            </span>
+        <span className="leading-none">
+          <span className="block text-[12px] font-semibold tracking-[-.015em] text-white">
+            Auto Resource <span className="text-blue-200">Updater</span>
           </span>
-          <span className="mt-0.5 block text-[7px] font-semibold uppercase tracking-[.24em] text-slate-600">
-            FiveM resource control
+          <span className="mt-1.5 block text-[8px] font-medium uppercase tracking-[.18em] text-slate-600">
+            Resource change control
           </span>
         </span>
       </Link>
-      <nav className="ml-auto flex items-center gap-1">
-        <Link
-          href="/#features"
-          className="hidden rounded-md px-3 py-2 text-[11px] text-slate-500 hover:text-white md:block"
-        >
-          Features
-        </Link>
-        <Link
-          href="/#pricing"
-          className="hidden rounded-md px-3 py-2 text-[11px] text-slate-500 hover:text-white md:block"
-        >
-          Pricing
-        </Link>
-        <Link
-          href="/#referrals"
-          className="hidden rounded-md px-3 py-2 text-[11px] text-slate-500 hover:text-white lg:block"
-        >
-          Affiliates
-        </Link>
-        <Link
-          href="/#faq"
-          className="hidden rounded-md px-3 py-2 text-[11px] text-slate-500 hover:text-white lg:block"
-        >
-          FAQ
-        </Link>
+
+      <nav className="ml-auto flex items-center gap-1" aria-label="Primary navigation">
+        {[['Workflow','/#features'],['Pricing','/#pricing'],['Affiliates','/#referrals'],['FAQ','/#faq']].map(([label,href], index)=><Link key={href} href={href} className={`nav-link hidden rounded-lg px-3 py-2 text-[11px] font-medium text-slate-500 transition-[color,background-color] duration-150 ease-out hover:bg-white/[.035] hover:text-white ${index>1?'lg:block':'md:block'}`}>{label}</Link>)}
         {session ? (
-          <details className="group relative ml-2">
-            <summary className="flex cursor-pointer list-none items-center gap-2 rounded-md border border-white/10 bg-white/[.045] px-3.5 py-2 text-[10px] font-semibold text-slate-200 transition hover:bg-white/[.08] [&::-webkit-details-marker]:hidden">
+          <details className="account-menu group relative ml-2">
+            <summary className="surface-button flex h-9 cursor-pointer list-none items-center gap-2 rounded-[11px] px-3.5 text-[10px] font-semibold text-slate-200 transition-[background-color,box-shadow,scale] duration-150 ease-out active:scale-[0.96] [&::-webkit-details-marker]:hidden">
               My account
-              <ChevronDown className="h-3 w-3 text-slate-500 transition group-open:rotate-180" />
+              <span className="relative grid h-3.5 w-3.5 place-items-center">
+                <ChevronDown strokeWidth={2} className="h-3.5 w-3.5 text-slate-500 transition-transform duration-150 ease-out group-open:rotate-180" />
+              </span>
             </summary>
-            <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-52 overflow-hidden rounded-xl border border-white/[.11] bg-[#151c23] p-1.5 shadow-[0_24px_70px_rgba(0,0,0,.55)]">
+            <div className="account-popover absolute right-0 top-[calc(100%+10px)] z-50 w-60 origin-top-right overflow-hidden rounded-2xl p-2">
               <div className="border-b border-white/[.07] px-3 py-2.5">
-                <p className="truncate text-[9px] font-semibold text-white">
+                <p className="truncate text-[11px] font-semibold text-white">
                   {session.user?.name ?? "Discord user"}
                 </p>
-                <p className="mt-1 text-[7px] uppercase tracking-[.12em] text-[#7c89f8]">
-                  Connected with Discord
+                <p className="mt-1.5 flex items-center gap-1.5 text-[8px] uppercase tracking-[.14em] text-[#9ca7ff]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#7f8cff] shadow-[0_0_10px_rgba(127,140,255,.7)]" /> Discord connected
                 </p>
               </div>
               <Link
                 href="/account"
-                className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-[9px] text-slate-300 hover:bg-white/[.06] hover:text-white"
+                className="mt-1.5 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[10px] text-slate-300 transition-[color,background-color] duration-150 hover:bg-white/[.055] hover:text-white"
               >
-                <UserRound className="h-3.5 w-3.5 text-slate-500" />
+                <UserRound strokeWidth={1.5} className="h-4 w-4 text-slate-500" />
                 Subscription & billing
               </Link>
               <form
@@ -81,9 +57,9 @@ export async function SiteHeader() {
               >
                 <button
                   type="submit"
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-[9px] text-red-300/80 hover:bg-red-400/[.07] hover:text-red-300"
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-[10px] text-red-300/75 transition-[color,background-color,scale] duration-150 ease-out hover:bg-red-400/[.07] hover:text-red-200 active:scale-[0.96]"
                 >
-                  <LogOut className="h-3.5 w-3.5" />
+                  <LogOut strokeWidth={1.5} className="h-4 w-4" />
                   Sign out of Discord
                 </button>
               </form>
@@ -92,16 +68,16 @@ export async function SiteHeader() {
         ) : (
           <Link
             href="/login"
-            className="ml-2 rounded-md border border-white/10 bg-white/[.035] px-3.5 py-2 text-[10px] font-semibold text-slate-300 hover:bg-white/[.07]"
+            className="surface-button ml-2 flex h-9 items-center rounded-[11px] px-3.5 text-[10px] font-semibold text-slate-200 transition-[background-color,box-shadow,scale] duration-150 ease-out hover:bg-white/[.07] active:scale-[0.96]"
           >
             Sign in
           </Link>
         )}
         <Link
           href="/affiliates"
-          className={`ml-1 hidden rounded-md border px-3.5 py-2 text-[10px] font-semibold sm:block border-cyan-200/20 bg-cyan-200/[.07] text-cyan-100`}
+          className="header-cta ml-1 hidden h-9 items-center gap-1.5 rounded-[11px] px-3.5 text-[10px] font-semibold text-[#071225] transition-[filter,scale] duration-150 ease-out hover:brightness-105 active:scale-[0.96] sm:flex"
         >
-          Affiliate dashboards
+          Affiliate area <ArrowUpRight strokeWidth={2} className="h-3.5 w-3.5" />
         </Link>
       </nav>
     </header>

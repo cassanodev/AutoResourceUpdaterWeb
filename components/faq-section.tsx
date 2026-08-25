@@ -41,33 +41,33 @@ const questions = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="px-5 py-28 lg:px-8">
-      <div className="ocean-glass mx-auto grid max-w-[1240px] gap-12 rounded-[30px] p-7 sm:p-10 lg:grid-cols-[.65fr_1.35fr] lg:p-14">
+    <section id="faq" className="px-5 py-24 lg:px-8 lg:py-32">
+      <div className="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[.62fr_1.38fr] lg:gap-16">
         <div>
-          <div className="grid h-11 w-11 place-items-center rounded-xl border border-cyan-200/15 bg-cyan-200/[.06]">
-            <HelpCircle className="h-5 w-5 text-cyan-200" />
+          <div className="premium-icon h-11 w-11 rounded-xl">
+            <HelpCircle strokeWidth={1.5} className="h-5 w-5" />
           </div>
           <p className="ocean-kicker mt-6">Frequently asked questions</p>
-          <h2 className="display mt-4 text-4xl font-bold tracking-[-.045em] text-white">
+          <h2 className="display mt-4 text-4xl font-semibold tracking-[-.05em] text-white">
             Clear answers before you update.
           </h2>
-          <p className="mt-4 max-w-sm text-[12px] leading-6 text-slate-500">
+          <p className="mt-4 max-w-sm text-[13px] leading-7 text-slate-400">
             Your files, backups and server configuration matter. Here is exactly
             how the workflow handles them.
           </p>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {questions.map(([question, answer], index) => (
             <details
               key={question}
-              className="group rounded-2xl border border-white/[.06] bg-white/[.018] px-4 transition open:border-cyan-200/10 open:bg-cyan-200/[.025]"
+              className="group rounded-2xl bg-white/[.018] px-5 shadow-[0_0_0_1px_rgba(255,255,255,.065)] transition-[background-color,box-shadow] duration-150 ease-out open:bg-blue-200/[.028] open:shadow-[0_0_0_1px_rgba(168,192,255,.13)]"
               open={index === 0}
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-4 text-[11px] font-semibold text-slate-200 [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-4.5 text-[11px] font-semibold text-slate-200 [&::-webkit-details-marker]:hidden">
                 {question}
-                <ChevronDown className="h-4 w-4 shrink-0 text-cyan-200/50 transition group-open:rotate-180" />
+                <ChevronDown strokeWidth={1.5} className="h-4 w-4 shrink-0 text-blue-200/55 transition-transform duration-150 ease-out group-open:rotate-180" />
               </summary>
-              <p className="max-w-2xl pb-5 pr-10 text-[10px] leading-6 text-slate-500">
+              <p className="max-w-2xl pb-5 pr-10 text-[11px] leading-6 text-slate-500">
                 {answer}
               </p>
             </details>

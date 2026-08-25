@@ -13,7 +13,7 @@ export function DiscordLogin({
   return (
     <button
       onClick={() => void signIn("discord", { redirectTo: callbackUrl })}
-      className={`inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#5865f2] px-5 text-[10px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#6772f5] ${className}`}
+      className={`tap-control inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5865f2] px-5 text-[10px] font-semibold text-white transition-[background-color,scale] duration-150 ease-out hover:bg-[#6772f5] active:scale-[0.96] ${className}`}
     >
       <DiscordIcon className="h-4 w-4" />
       {label}

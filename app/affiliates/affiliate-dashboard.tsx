@@ -5,11 +5,9 @@ import {
   Check,
   Clock3,
   Copy,
-  DollarSign,
   Info,
   Search,
   Users,
-  X,
 } from "lucide-react";
 import type {
   AffiliateData,
@@ -59,13 +57,11 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
     [filter, search],
   );
   return (
-    <div className="relative mx-auto max-w-[1240px] px-5 pb-20 pt-10 lg:px-8">
-      <div className="mb-9 flex flex-col gap-5 sm:flex-row sm:items-end">
+    <div className="relative mx-auto max-w-[1180px] px-5 pb-24 pt-12 lg:px-8">
+      <div className="page-enter mb-9 flex flex-col gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-[9px] font-bold uppercase tracking-[.2em] text-amber-400">
-            Affiliate workspace
-          </p>
-          <h1 className="display mt-3 text-4xl font-bold tracking-[-.045em] text-white">
+          <p className="ocean-kicker text-[8px]">Affiliate workspace</p>
+          <h1 className="display mt-3 text-4xl font-semibold tracking-[-.05em] text-white">
             Your referrals
           </h1>
           <p className="mt-2 text-[11px] text-slate-600">
@@ -75,13 +71,15 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
         <button
           onClick={() => setWithdraw(true)}
           disabled={data.availableBalance < 30}
-          className="sm:ml-auto flex h-10 items-center justify-center gap-2 rounded-lg border border-emerald-400/20 bg-emerald-400/[.08] px-4 text-[10px] font-semibold text-emerald-300 hover:bg-emerald-400/[.13]"
+          className="tap-control sm:ml-auto flex h-10 items-center justify-center gap-2 rounded-xl bg-teal-300/[.08] px-4 text-[10px] font-semibold text-teal-300 shadow-[0_0_0_1px_rgba(115,215,205,.16)] transition-[background-color,box-shadow,scale] duration-150 ease-out hover:bg-teal-300/[.12] hover:shadow-[0_0_0_1px_rgba(115,215,205,.24)] disabled:cursor-not-allowed disabled:opacity-40"
         >
-          <ArrowDownToLine className="h-3.5 w-3.5" />
-          {data.availableBalance < 30 ? "Minimum $30 to withdraw" : "Withdraw funds"}
+          <ArrowDownToLine strokeWidth={2} className="h-3.5 w-3.5" />
+          {data.availableBalance < 30
+            ? "Minimum $30 to withdraw"
+            : "Withdraw funds"}
         </button>
       </div>
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="page-enter page-enter-delay-1 premium-panel grid gap-px overflow-hidden rounded-2xl bg-white/[.055] md:grid-cols-3">
         <Stat
           label="Available balance"
           value={`$${data.availableBalance.toFixed(2)}`}
@@ -101,7 +99,7 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
           accent="slate"
         />
       </div>
-      <div className="mt-5 flex flex-col gap-3 rounded-xl border border-white/[.07] bg-[#0d1217] p-4 sm:flex-row sm:items-center">
+      <div className="premium-card mt-5 flex flex-col gap-3 rounded-2xl p-4 sm:flex-row sm:items-center">
         <div className="min-w-0 flex-1">
           <p className="text-[8px] font-bold uppercase tracking-[.16em] text-slate-700">
             Your custom referral code
@@ -116,17 +114,22 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
             setCopied(true);
             setTimeout(() => setCopied(false), 1500);
           }}
-          className="flex h-8 items-center justify-center gap-2 rounded-md border border-white/[.08] px-3 text-[9px] text-slate-400 hover:bg-white/[.04]"
+          className="tap-control flex h-9 items-center justify-center gap-2 rounded-xl px-3 text-[9px] text-slate-400 shadow-[0_0_0_1px_rgba(255,255,255,.08)] transition-[color,background-color,box-shadow,scale] duration-150 ease-out hover:bg-white/[.04] hover:text-white hover:shadow-[0_0_0_1px_rgba(255,255,255,.13)]"
         >
-          {copied ? (
-            <Check className="h-3 w-3 text-emerald-400" />
-          ) : (
-            <Copy className="h-3 w-3" />
-          )}
+          <span className="relative grid h-3.5 w-3.5 place-items-center">
+            <Check
+              strokeWidth={2}
+              className={`absolute h-3.5 w-3.5 text-teal-300 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)] ${copied ? "scale-100 opacity-100 blur-0" : "scale-[.25] opacity-0 blur-[4px]"}`}
+            />
+            <Copy
+              strokeWidth={1.5}
+              className={`absolute h-3.5 w-3.5 transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)] ${copied ? "scale-[.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-0"}`}
+            />
+          </span>
           {copied ? "Copied" : "Copy code"}
         </button>
       </div>
-      <section className="mt-5 overflow-hidden rounded-xl border border-white/[.07] bg-[#0d1217]">
+      <section className="premium-panel mt-5 overflow-hidden rounded-2xl">
         <div className="flex flex-col gap-3 border-b border-white/[.06] p-4 lg:flex-row lg:items-center">
           <div className="flex gap-1 overflow-x-auto">
             {(
@@ -141,7 +144,7 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
               <button
                 key={item}
                 onClick={() => setFilter(item)}
-                className={`whitespace-nowrap rounded-md px-3 py-2 text-[9px] font-medium ${filter === item ? "bg-white/[.08] text-white" : "text-slate-600 hover:text-slate-300"}`}
+                className={`tap-control whitespace-nowrap rounded-lg px-3 py-2 text-[9px] font-medium transition-[color,background-color,scale] duration-150 ease-out ${filter === item ? "bg-blue-200/[.08] text-blue-100 shadow-[inset_0_0_0_1px_rgba(168,192,255,.08)]" : "text-slate-600 hover:bg-white/[.025] hover:text-slate-300"}`}
               >
                 {item === "all" ? "All referrals" : labels[item]}
               </button>
@@ -153,7 +156,7 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search username or Discord ID"
-              className="h-9 w-full rounded-md border border-white/[.07] bg-[#080b0e] pl-8 pr-3 text-[9px] outline-none placeholder:text-slate-700 focus:border-amber-300/25"
+              className="premium-input h-9 w-full rounded-xl pl-8 pr-3 text-[9px] text-white placeholder:text-slate-700"
             />
           </div>
         </div>
@@ -173,7 +176,7 @@ export function AffiliateDashboard({ data }: { data: AffiliateData }) {
               {visible.map((row) => (
                 <tr
                   key={row.id}
-                  className="border-b border-white/[.045] text-[9px] transition last:border-0 hover:bg-white/[.018]"
+                  className="border-b border-white/[.045] text-[9px] transition-[background-color] duration-100 ease-out last:border-0 hover:bg-blue-100/[.018]"
                 >
                   <td className="px-5 py-4 font-semibold text-slate-300">
                     {row.user}
@@ -232,13 +235,13 @@ function Stat({
 }) {
   return (
     <div
-      className={`rounded-xl border p-5 ${accent === "green" ? "border-emerald-400/10 bg-emerald-400/[.035]" : accent === "amber" ? "border-amber-400/10 bg-amber-400/[.025]" : "border-white/[.07] bg-[#0d1217]"}`}
+      className={`bg-[#071020] p-5 ${accent === "green" ? "text-teal-300" : accent === "amber" ? "text-blue-200" : "text-white"}`}
     >
       <p className="text-[8px] font-bold uppercase tracking-[.16em] text-slate-700">
         {label}
       </p>
       <p
-        className={`display mt-3 text-3xl font-bold tracking-[-.04em] ${accent === "green" ? "text-emerald-300" : accent === "amber" ? "text-amber-300" : "text-white"}`}
+        className={`display mt-3 text-3xl font-semibold tracking-[-.05em] ${accent === "green" ? "text-teal-300" : accent === "amber" ? "text-blue-200" : "text-white"}`}
       >
         {value}
       </p>
@@ -280,95 +283,5 @@ function StatusBadge({
         </span>
       )}
     </span>
-  );
-}
-function WithdrawModal({
-  onClose,
-  amount,
-}: {
-  onClose: () => void;
-  amount: number;
-}) {
-  const [requested, setRequested] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const requestWithdrawal = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await fetch("/api/affiliates/withdraw", {
-        method: "POST",
-      });
-      const data = await response.json();
-      if (!response.ok)
-        throw new Error(data.error || "Unable to request withdrawal");
-      setRequested(true);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Unable to request withdrawal");
-    } finally {
-      setLoading(false);
-    }
-  };
-  return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-black/75 p-5 backdrop-blur-sm">
-      <div className="w-full max-w-[430px] rounded-2xl border border-white/[.09] bg-[#11171c] p-6 shadow-2xl">
-        <div className="flex items-start justify-between">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-400/[.08]">
-            <DollarSign className="h-5 w-5 text-emerald-300" />
-          </div>
-          <button
-            onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-md hover:bg-white/[.05]"
-          >
-            <X className="h-4 w-4 text-slate-600" />
-          </button>
-        </div>
-        {requested ? (
-          <div className="py-6 text-center">
-            <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-emerald-400/[.08]">
-              <Check className="h-5 w-5 text-emerald-300" />
-            </div>
-            <h2 className="mt-4 text-lg font-semibold text-white">
-              Withdrawal requested
-            </h2>
-            <p className="mt-2 text-[10px] leading-5 text-slate-500">
-              Your ${amount.toFixed(2)} payout request is now being reviewed.
-            </p>
-            <button
-              onClick={onClose}
-              className="mt-6 h-9 rounded-md border border-white/10 px-4 text-[9px] text-slate-300"
-            >
-              Done
-            </button>
-          </div>
-        ) : (
-          <>
-            <h2 className="mt-5 text-lg font-semibold text-white">
-              Withdraw available funds
-            </h2>
-            <p className="mt-2 text-[10px] leading-5 text-slate-500">
-              Payouts are processed through the payment method connected to your
-              affiliate account.
-            </p>
-            <div className="mt-5 rounded-lg border border-white/[.07] bg-[#0a0e12] p-4">
-              <p className="text-[8px] uppercase tracking-[.15em] text-slate-700">
-                Available
-              </p>
-              <p className="mt-2 font-mono text-xl text-emerald-300">
-                ${amount.toFixed(2)}
-              </p>
-            </div>
-            <button
-              onClick={() => void requestWithdrawal()}
-              disabled={loading || amount <= 0}
-              className="mt-5 h-10 w-full rounded-md bg-emerald-400 text-[10px] font-bold text-[#07130e] hover:bg-emerald-300"
-            >
-              {loading ? "Requesting…" : "Request withdrawal"}
-            </button>
-            {error && <p className="mt-3 text-[9px] text-red-300">{error}</p>}
-          </>
-        )}
-      </div>
-    </div>
   );
 }

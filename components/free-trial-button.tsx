@@ -74,15 +74,15 @@ export function FreeTrialButton({
       {open &&
         typeof document !== "undefined" &&
         createPortal(
-          <div className="fixed inset-0 z-[100] grid place-items-center bg-[#030817]/80 p-5 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[100] grid place-items-center bg-[#01040c]/85 p-5">
             <div
               role="dialog"
               aria-modal="true"
               aria-labelledby="trial-title"
-              className="ocean-glass w-full max-w-[440px] rounded-[24px] p-7"
+              className="premium-panel page-enter w-full max-w-[440px] rounded-[24px] p-7"
             >
               <div className="flex items-start justify-between">
-                <div className="grid h-11 w-11 place-items-center rounded-xl border border-cyan-200/15 bg-cyan-200/[.06]">
+                <div className="premium-icon h-11 w-11 rounded-xl">
                   <Sparkles className="h-5 w-5 text-cyan-200" />
                 </div>
                 <button
@@ -95,7 +95,7 @@ export function FreeTrialButton({
               </div>
               {success ? (
                 <div className="py-4 text-center">
-                  <div className="mx-auto grid h-12 w-12 place-items-center rounded-full border border-teal-300/25 bg-teal-300/10">
+                  <div className="mx-auto grid h-12 w-12 place-items-center rounded-[14px] bg-teal-300/[.08] shadow-[0_0_0_1px_rgba(115,215,205,.16)]">
                     <Check className="h-5 w-5 text-teal-300" />
                   </div>
                   <h2
@@ -113,7 +113,7 @@ export function FreeTrialButton({
                   </p>
                   <button
                     onClick={() => setOpen(false)}
-                    className="ocean-primary mt-7 inline-flex h-11 w-full items-center justify-center rounded-xl text-[11px] font-bold transition hover:-translate-y-0.5"
+                    className="ocean-primary mt-7 inline-flex h-11 w-full items-center justify-center rounded-xl text-[11px] font-bold"
                   >
                     Done
                   </button>
@@ -131,7 +131,7 @@ export function FreeTrialButton({
                     You will receive full access to every Auto Resource
                     Updater feature until:
                   </p>
-                  <div className="mt-4 rounded-xl border border-white/[.08] bg-white/[.025] p-4 text-[12.5px] font-semibold text-slate-200">
+                  <div className="premium-card mt-4 rounded-2xl p-4 text-[12.5px] font-semibold text-slate-200">
                     {expires}
                   </div>
                   <p className="mt-3 text-[11px] text-slate-500">
@@ -153,7 +153,7 @@ export function FreeTrialButton({
                     <button
                       onClick={() => void confirm()}
                       disabled={loading}
-                      className="ocean-primary flex h-11 items-center justify-center gap-2 rounded-xl text-[11px] font-bold transition hover:-translate-y-0.5 disabled:opacity-50"
+                      className="ocean-primary flex h-11 items-center justify-center gap-2 rounded-xl text-[11px] font-bold disabled:opacity-50"
                     >
                       {loading ? (
                         <LoaderCircle className="h-4 w-4 animate-spin" />

@@ -71,16 +71,16 @@ export function Checkout({
   };
 
   return (
-    <section className="ocean-home relative isolate min-h-[calc(100vh-80px)] overflow-hidden px-5 py-16 lg:px-8">
-      <CheckoutGlow />
+    <section className="relative isolate min-h-[calc(100svh-76px)] overflow-hidden px-5 py-14 lg:px-8">
+      <CheckoutBackdrop />
 
       {success ? (
         <div className="relative z-10 mx-auto grid min-h-[60vh] max-w-[520px] place-items-center">
-          <div className="ocean-glass w-full rounded-[24px] p-8 text-center sm:p-10">
-            <div className="mx-auto grid h-12 w-12 place-items-center rounded-full border border-teal-300/25 bg-teal-300/10">
-              <Check className="h-5 w-5 text-teal-300" />
+          <div className="premium-panel page-enter w-full rounded-[26px] p-8 text-center sm:p-10">
+            <div className="mx-auto grid h-12 w-12 place-items-center rounded-[14px] bg-teal-300/[.08] text-teal-300 shadow-[0_0_0_1px_rgba(115,215,205,.16)]">
+              <Check strokeWidth={2} className="h-5 w-5" />
             </div>
-            <h1 className="display mt-6 text-[28px] font-bold tracking-[-.03em] text-white">
+            <h1 className="display mt-6 text-[28px] font-semibold tracking-[-.04em] text-white">
               Subscription approved
             </h1>
             <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-6 text-slate-400">
@@ -90,30 +90,30 @@ export function Checkout({
             <Link
               href="/account"
               prefetch={false}
-              className="ocean-primary mt-8 inline-flex h-11 items-center justify-center rounded-xl px-7 text-[11px] font-bold transition hover:-translate-y-0.5"
+              className="ocean-primary mt-8 inline-flex h-11 items-center justify-center rounded-xl px-7 text-[11px] font-bold"
             >
               Open my account
             </Link>
           </div>
         </div>
       ) : (
-        <div className="relative z-10 mx-auto max-w-[500px]">
+        <div className="page-enter relative z-10 mx-auto max-w-[520px]">
           <Link
             href="/#pricing"
-            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-500 transition hover:text-slate-300"
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-500 transition-colors duration-150 hover:text-slate-300"
           >
-            <ChevronLeft className="h-3.5 w-3.5" />
+            <ChevronLeft strokeWidth={1.5} className="h-3.5 w-3.5" />
             Back to pricing
           </Link>
 
           <div className="mt-6 text-center">
             <p className="ocean-kicker">Checkout</p>
-            <h1 className="display mt-4 text-[32px] font-bold leading-[1.05] tracking-[-.04em] text-white sm:text-[38px]">
+            <h1 className="display mt-4 text-[32px] font-semibold leading-[1.05] tracking-[-.05em] text-white sm:text-[40px]">
               Complete your membership
             </h1>
           </div>
 
-          <div className="ocean-glass mt-8 rounded-[28px] p-6 sm:p-8">
+          <div className="premium-panel mt-8 rounded-[26px] p-6 sm:p-8">
             <div className="flex items-center justify-between">
               <div>
                 <p className="ocean-label">Selected plan</p>
@@ -139,12 +139,12 @@ export function Checkout({
                 }}
                 maxLength={32}
                 placeholder="Discount code"
-                className="h-11 flex-1 rounded-lg border border-white/[.1] bg-white/[.03] px-3.5 text-[13px] tracking-[.03em] text-white placeholder:text-slate-600 outline-none transition focus:border-[#81a7ff]/50 focus:ring-2 focus:ring-[#81a7ff]/15"
+                className="premium-input h-11 min-w-0 flex-1 rounded-xl px-3.5 text-[13px] tracking-[.03em] text-white placeholder:text-slate-600"
               />
               <button
                 onClick={() => void apply()}
                 disabled={checking || !code.trim()}
-                className="ocean-secondary h-11 min-w-[76px] rounded-lg text-[11px] font-semibold text-slate-200 disabled:opacity-40"
+                className="ocean-secondary h-11 min-w-[76px] rounded-xl text-[11px] font-semibold text-slate-200 disabled:opacity-40"
               >
                 {checking ? (
                   <LoaderCircle className="mx-auto h-3.5 w-3.5 animate-spin" />
@@ -189,7 +189,7 @@ export function Checkout({
               </p>
             </div>
 
-            <label className="mt-6 flex cursor-pointer items-start gap-2.5 rounded-xl border border-white/[.07] bg-white/[.02] p-3.5 transition hover:border-white/[.13]">
+            <label className="premium-card mt-6 flex cursor-pointer items-start gap-2.5 rounded-2xl p-3.5">
               <input
                 type="checkbox"
                 checked={termsAccepted}
@@ -211,7 +211,7 @@ export function Checkout({
 
             <div className="mt-6">
               {!authenticated ? (
-                <div className="rounded-xl border border-[#5865f2]/25 bg-[#5865f2]/[.08] p-4 text-center">
+                <div className="rounded-2xl bg-[#5865f2]/[.08] p-4 text-center shadow-[0_0_0_1px_rgba(127,140,255,.2)]">
                   <p className="text-[12px] leading-5 text-slate-300">
                     Sign in with Discord to continue.
                   </p>
@@ -271,14 +271,7 @@ function PaymentOptions({
           Preparing your subscription…
         </div>
       )}
-      {/*
-        El SDK de PayPal siempre renderiza un footer blanco tipo
-        "Powered by PayPal" dentro de su propio iframe — no es
-        editable desde nuestro CSS (cross-origin). En vez de pelear
-        contra eso, lo enmarcamos como una tarjeta clara intencional,
-        con padding blanco alrededor para que se vea a propósito.
-      */}
-      <div className="rounded-2xl bg-white p-3 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
+      <div className="overflow-hidden rounded-xl">
         <PayPalScriptProvider
           options={{
             clientId,
@@ -335,15 +328,14 @@ function PaymentOptions({
   );
 }
 
-function CheckoutGlow() {
+function CheckoutBackdrop() {
   return (
     <div
       className="pointer-events-none absolute inset-0 -z-10"
       aria-hidden="true"
     >
-      <div className="checkout-glow-a absolute -left-1/4 top-[-10%] h-[560px] w-[560px] rounded-full opacity-40 blur-[110px]" />
-      <div className="checkout-glow-b absolute -right-1/4 top-[15%] h-[520px] w-[520px] rounded-full opacity-30 blur-[110px]" />
-      <div className="checkout-glow-c absolute bottom-[-15%] left-1/3 h-[480px] w-[480px] rounded-full opacity-25 blur-[110px]" />
+      <div className="absolute left-1/2 top-10 h-px w-[min(900px,90vw)] -translate-x-1/2 bg-gradient-to-r from-transparent via-blue-200/20 to-transparent" />
+      <div className="absolute bottom-12 left-1/2 h-px w-[min(620px,70vw)] -translate-x-1/2 bg-gradient-to-r from-transparent via-teal-200/10 to-transparent" />
     </div>
   );
 }

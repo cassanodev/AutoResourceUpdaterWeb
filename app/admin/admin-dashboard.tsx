@@ -74,22 +74,20 @@ export function AdminDashboard({
   if (data.identity.isOwner)
     navigation.push({ id: "admins", label: "Administrators", Icon: UserCog });
   return (
-    <div className="mx-auto max-w-[1240px] px-5 pb-24 pt-8 lg:px-8">
-      <header className="flex items-center justify-between border-b border-white/[.08] pb-7">
+    <div className="mx-auto max-w-[1180px] px-5 pb-24 pt-12 lg:px-8">
+      <header className="page-enter flex items-center justify-between pb-7">
         <div className="flex items-center gap-4">
-          <span className="grid h-11 w-11 place-items-center rounded-xl border border-amber-300/20 bg-amber-300/[.07]">
-            <ShieldCheck className="h-5 w-5 text-amber-300" />
+          <span className="premium-icon h-11 w-11 rounded-xl">
+            <ShieldCheck strokeWidth={1.5} className="h-5 w-5" />
           </span>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[.18em] text-amber-400">
-              Restricted workspace
-            </p>
-            <h1 className="mt-1 text-3xl font-bold text-white">
+            <p className="ocean-kicker text-[8px]">Restricted workspace</p>
+            <h1 className="display mt-1.5 text-3xl font-semibold tracking-[-.04em] text-white">
               Administration
             </h1>
           </div>
         </div>
-        <span className="rounded-full border border-white/10 px-3 py-1 text-xs capitalize text-slate-400">
+        <span className="rounded-full bg-blue-200/[.035] px-3 py-1.5 text-[9px] font-semibold capitalize text-slate-400 shadow-[0_0_0_1px_rgba(168,192,255,.1)]">
           {data.identity.role}
         </span>
       </header>
@@ -98,14 +96,14 @@ export function AdminDashboard({
           {error}
         </p>
       )}
-      <nav className="mt-7 flex gap-1 border-b border-white/[.08]">
+      <nav className="page-enter page-enter-delay-1 premium-panel mt-3 inline-flex gap-1 rounded-2xl p-1.5">
         {navigation.map(({ id, label, Icon }) => (
           <button
             key={id}
             onClick={() => setTab(id)}
-            className={`flex items-center gap-2 border-b-2 px-4 py-3 text-xs font-semibold ${tab === id ? "border-amber-300 text-white" : "border-transparent text-slate-500"}`}
+            className={`tap-control flex items-center gap-2 rounded-xl px-4 py-2.5 text-[10px] font-semibold transition-[color,background-color,scale] duration-150 ease-out ${tab === id ? "bg-blue-200/[.09] text-blue-100 shadow-[inset_0_0_0_1px_rgba(168,192,255,.08)]" : "text-slate-500 hover:bg-white/[.025] hover:text-slate-200"}`}
           >
-            <Icon className="h-4 w-4" />
+            <Icon strokeWidth={tab === id ? 2 : 1.5} className="h-4 w-4" />
             {label}
           </button>
         ))}
@@ -170,7 +168,7 @@ export function AdminDashboard({
               data.withdrawals.map((item) => (
                 <article
                   key={item.id}
-                  className="flex flex-col gap-4 rounded-xl border border-white/[.08] bg-[#0e1419] p-5 md:flex-row md:items-center"
+                  className="premium-card flex flex-col gap-4 rounded-2xl p-5 md:flex-row md:items-center"
                 >
                   <div className="flex-1">
                     <User name={item.discordUsername} id={item.discordId} />
@@ -276,17 +274,170 @@ export function AdminDashboard({
   );
 }
 function UserSubscriptions() {
-  const [discordId, setDiscordId] = useState(""), [user, setUser] = useState<AdminUserResult | null>(null), [plan, setPlan] = useState<"weekly" | "monthly" | "six_months" | "yearly">("monthly"), [busy, setBusy] = useState(false), [error, setError] = useState("");
+  const [discordId, setDiscordId] = useState(""),
+    [user, setUser] = useState<AdminUserResult | null>(null),
+    [plan, setPlan] = useState<"weekly" | "monthly" | "six_months" | "yearly">(
+      "monthly",
+    ),
+    [busy, setBusy] = useState(false),
+    [error, setError] = useState("");
   const request = async (path: string, body: unknown) => {
-    const response = await fetch(path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    const response = await fetch(path, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
     const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "Unable to complete action");
+    if (!response.ok)
+      throw new Error(result.error || "Unable to complete action");
     return result;
   };
-  const find = async () => { setBusy(true); setError(""); try { const result = await request("/api/admin/users/find", { targetDiscordId: discordId.trim() }); setUser(result.user); } catch (value) { setUser(null); setError(value instanceof Error ? value.message : "Unable to find user"); } finally { setBusy(false); } };
-  const update = async (action: "assign" | "revoke") => { if (!user) return; setBusy(true); setError(""); try { await request("/api/admin/users/subscription", { targetDiscordId: user.discordId, action, plan: action === "assign" ? plan : undefined, reason: "Changed in web administration" }); const result = await request("/api/admin/users/find", { targetDiscordId: user.discordId }); setUser(result.user); } catch (value) { setError(value instanceof Error ? value.message : "Unable to update subscription"); } finally { setBusy(false); } };
-  const plans = [{ id: "weekly", label: "7 days", price: "$4.99" }, { id: "monthly", label: "1 month", price: "$9.99" }, { id: "six_months", label: "6 months", price: "$44.99" }, { id: "yearly", label: "1 year", price: "$79.99" }] as const;
-  return <section className="mt-6"><Section title="User subscriptions" text="Find an account by its exact Discord ID and manage its access." /><div className="rounded-2xl border border-cyan-200/[.1] bg-[#071426]/75 p-5 shadow-[inset_0_1px_rgba(255,255,255,.035)]"><div className="flex gap-3"><label className="relative flex-1"><Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><input value={discordId} onChange={event => setDiscordId(event.target.value.replace(/\D/g, ""))} onKeyDown={event => { if (event.key === "Enter") void find(); }} placeholder="Discord ID" className="h-11 w-full rounded-xl border border-white/10 bg-[#040b18] pl-10 pr-4 text-sm text-white outline-none focus:border-cyan-200/30" /></label><button disabled={busy || discordId.length < 5} onClick={() => void find()} className="rounded-xl bg-cyan-100 px-5 text-xs font-bold text-[#03111b] disabled:opacity-40">{busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : "Find account"}</button></div>{error && <p className="mt-4 rounded-lg border border-red-400/20 bg-red-400/[.06] p-3 text-sm text-red-300">{error}</p>}{user && <div className="mt-6 border-t border-white/[.07] pt-6"><div className="flex flex-wrap items-start justify-between gap-4"><User name={user.discordUsername} id={user.discordId} /><div className="text-right"><p className="text-[10px] uppercase tracking-wider text-slate-500">Current access</p><p className="mt-1 text-sm font-semibold capitalize text-cyan-100">{user.subscription ? `${user.subscription.plan.replaceAll("_", " ")} · ${user.subscription.status}` : user.trial?.status === "active" ? "Free trial" : "No active plan"}</p>{user.subscription?.endsAt && <p className="mt-1 text-xs text-slate-500">Until {new Date(user.subscription.endsAt).toLocaleDateString()}</p>}</div></div><div className="mt-6 grid grid-cols-4 gap-3">{plans.map(item => <button key={item.id} onClick={() => setPlan(item.id)} className={`rounded-xl border p-4 text-left transition ${plan === item.id ? "border-cyan-200/30 bg-cyan-200/[.07]" : "border-white/[.08] bg-white/[.02] hover:border-white/[.14]"}`}><span className="block text-sm font-semibold text-white">{item.label}</span><span className="mt-1 block text-xs text-slate-500">{item.price}</span></button>)}</div><div className="mt-5 flex justify-end gap-3"><button disabled={busy || !user.subscription} onClick={() => void update("revoke")} className="rounded-lg border border-red-400/20 px-4 py-2.5 text-xs font-semibold text-red-300 disabled:opacity-35">Revoke access</button><button disabled={busy} onClick={() => void update("assign")} className="flex min-w-40 items-center justify-center gap-2 rounded-lg bg-cyan-100 px-4 py-2.5 text-xs font-bold text-[#03111b]">{busy && <LoaderCircle className="h-4 w-4 animate-spin" />}Assign plan</button></div></div>}</div></section>;
+  const find = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      const result = await request("/api/admin/users/find", {
+        targetDiscordId: discordId.trim(),
+      });
+      setUser(result.user);
+    } catch (value) {
+      setUser(null);
+      setError(value instanceof Error ? value.message : "Unable to find user");
+    } finally {
+      setBusy(false);
+    }
+  };
+  const update = async (action: "assign" | "revoke") => {
+    if (!user) return;
+    setBusy(true);
+    setError("");
+    try {
+      await request("/api/admin/users/subscription", {
+        targetDiscordId: user.discordId,
+        action,
+        plan: action === "assign" ? plan : undefined,
+        reason: "Changed in web administration",
+      });
+      const result = await request("/api/admin/users/find", {
+        targetDiscordId: user.discordId,
+      });
+      setUser(result.user);
+    } catch (value) {
+      setError(
+        value instanceof Error
+          ? value.message
+          : "Unable to update subscription",
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+  const plans = [
+    { id: "weekly", label: "7 days", price: "$4.99" },
+    { id: "monthly", label: "1 month", price: "$9.99" },
+    { id: "six_months", label: "6 months", price: "$44.99" },
+    { id: "yearly", label: "1 year", price: "$79.99" },
+  ] as const;
+  return (
+    <section className="mt-6">
+      <Section
+        title="User subscriptions"
+        text="Find an account by its exact Discord ID and manage its access."
+      />
+      <div className="rounded-2xl border border-cyan-200/[.1] bg-[#071426]/75 p-5 shadow-[inset_0_1px_rgba(255,255,255,.035)]">
+        <div className="flex gap-3">
+          <label className="relative flex-1">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+            <input
+              value={discordId}
+              onChange={(event) =>
+                setDiscordId(event.target.value.replace(/\D/g, ""))
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") void find();
+              }}
+              placeholder="Discord ID"
+              className="premium-input h-11 w-full rounded-xl pl-10 pr-4 text-sm text-white"
+            />
+          </label>
+          <button
+            disabled={busy || discordId.length < 5}
+            onClick={() => void find()}
+            className="rounded-xl bg-cyan-100 px-5 text-xs font-bold text-[#03111b] disabled:opacity-40"
+          >
+            {busy ? (
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+            ) : (
+              "Find account"
+            )}
+          </button>
+        </div>
+        {error && (
+          <p className="mt-4 rounded-lg border border-red-400/20 bg-red-400/[.06] p-3 text-sm text-red-300">
+            {error}
+          </p>
+        )}
+        {user && (
+          <div className="mt-6 border-t border-white/[.07] pt-6">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <User name={user.discordUsername} id={user.discordId} />
+              <div className="text-right">
+                <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                  Current access
+                </p>
+                <p className="mt-1 text-sm font-semibold capitalize text-cyan-100">
+                  {user.subscription
+                    ? `${user.subscription.plan.replaceAll("_", " ")} · ${user.subscription.status}`
+                    : user.trial?.status === "active"
+                      ? "Free trial"
+                      : "No active plan"}
+                </p>
+                {user.subscription?.endsAt && (
+                  <p className="mt-1 text-xs text-slate-500">
+                    Until{" "}
+                    {new Date(user.subscription.endsAt).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="mt-6 grid grid-cols-4 gap-3">
+              {plans.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setPlan(item.id)}
+                  className={`tap-control rounded-2xl p-4 text-left transition-[background-color,box-shadow,scale] duration-150 ease-out ${plan === item.id ? "bg-blue-200/[.07] shadow-[0_0_0_1px_rgba(168,192,255,.22)]" : "bg-white/[.018] shadow-[0_0_0_1px_rgba(255,255,255,.07)] hover:bg-white/[.035] hover:shadow-[0_0_0_1px_rgba(255,255,255,.13)]"}`}
+                >
+                  <span className="block text-sm font-semibold text-white">
+                    {item.label}
+                  </span>
+                  <span className="mt-1 block text-xs text-slate-500">
+                    {item.price}
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                disabled={busy || !user.subscription}
+                onClick={() => void update("revoke")}
+                className="rounded-lg border border-red-400/20 px-4 py-2.5 text-xs font-semibold text-red-300 disabled:opacity-35"
+              >
+                Revoke access
+              </button>
+              <button
+                disabled={busy}
+                onClick={() => void update("assign")}
+                className="flex min-w-40 items-center justify-center gap-2 rounded-lg bg-cyan-100 px-4 py-2.5 text-xs font-bold text-[#03111b]"
+              >
+                {busy && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                Assign plan
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
 function AdminModal({
   modal,
@@ -344,10 +495,10 @@ function AdminModal({
               ? "Mark as paid"
               : "Approve withdrawal";
   return (
-    <div className="fixed inset-0 z-[100] grid place-items-center bg-black/75 p-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] grid place-items-center bg-[#020611]/88 p-5">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-md rounded-xl border border-white/[.1] bg-[#11171d] p-6"
+        className="premium-panel w-full max-w-md rounded-[24px] p-6"
       >
         <div className="flex justify-between">
           <h2 className="text-xl font-semibold text-white">{title}</h2>
@@ -362,7 +513,7 @@ function AdminModal({
                 type="button"
                 key={value}
                 onClick={() => setOperation(value)}
-                className={`h-10 rounded-lg border text-xs capitalize ${operation === value ? "border-amber-300/30 bg-amber-300/[.07] text-amber-200" : "border-white/10 text-slate-500"}`}
+                className={`tap-control h-10 rounded-xl border text-xs capitalize transition-[border-color,background-color,color] duration-150 ${operation === value ? "border-blue-300/30 bg-blue-300/[.08] text-blue-100" : "border-white/10 text-slate-500 hover:border-white/20 hover:text-slate-300"}`}
               >
                 {value}
               </button>
@@ -400,7 +551,7 @@ function AdminModal({
         )}
         <button
           disabled={busy}
-          className="mt-6 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-amber-300 text-sm font-bold text-[#17120a] disabled:opacity-40"
+          className="ocean-primary tap-control mt-6 flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-bold disabled:opacity-40"
         >
           {busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : "Confirm"}
         </button>
@@ -428,7 +579,7 @@ function Input({
         required={required}
         min={type === "number" ? 0 : undefined}
         step={type === "number" ? ".01" : undefined}
-        className="mt-2 h-11 w-full rounded-lg border border-white/10 bg-[#090d11] px-3 text-sm text-white outline-none [appearance:textfield] focus:border-amber-300/30 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="premium-input mt-2 h-11 w-full rounded-xl px-3 text-sm text-white [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
     </label>
   );
@@ -453,7 +604,7 @@ function Section({
       {action && (
         <button
           onClick={onAction}
-          className="rounded-lg bg-amber-300 px-4 py-2.5 text-xs font-bold text-[#17120a]"
+          className="ocean-primary tap-control rounded-xl px-4 py-2.5 text-[10px] font-bold"
         >
           {action}
         </button>
@@ -469,7 +620,7 @@ function Table({
   rows: React.ReactNode[][];
 }) {
   return (
-    <div className="overflow-auto rounded-xl border border-white/[.08] bg-[#0e1419]">
+    <div className="premium-panel overflow-auto rounded-2xl">
       <table className="w-full min-w-[850px] text-left text-sm">
         <thead>
           <tr>
@@ -485,7 +636,10 @@ function Table({
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} className="border-b border-white/[.05] last:border-0">
+            <tr
+              key={i}
+              className="border-b border-white/[.05] transition-[background-color] duration-100 ease-out last:border-0 hover:bg-blue-100/[.018]"
+            >
               {row.map((cell, j) => (
                 <td key={j} className="p-4 text-slate-300">
                   {cell}
@@ -508,7 +662,7 @@ function User({ name, id }: { name: string; id: string }) {
 }
 function Status({ value }: { value: string }) {
   return (
-    <span className="rounded-full border border-white/10 px-2 py-1 text-xs capitalize text-slate-400">
+    <span className="rounded-full bg-white/[.035] px-2.5 py-1 text-[10px] capitalize text-slate-400 shadow-[0_0_0_1px_rgba(255,255,255,.08)]">
       {value}
     </span>
   );
@@ -525,7 +679,7 @@ function Small({
   return (
     <button
       onClick={onClick}
-      className={`rounded-md border px-3 py-2 text-xs font-semibold ${danger ? "border-red-400/20 text-red-300" : "border-white/10 text-slate-300"}`}
+      className={`tap-control rounded-lg px-3 py-2 text-[10px] font-semibold transition-[background-color,box-shadow,scale] duration-150 ease-out ${danger ? "bg-red-400/[.055] text-red-300 shadow-[0_0_0_1px_rgba(248,113,113,.16)] hover:bg-red-400/[.09]" : "bg-white/[.025] text-slate-300 shadow-[0_0_0_1px_rgba(255,255,255,.08)] hover:bg-white/[.05]"}`}
     >
       {children}
     </button>
@@ -544,7 +698,7 @@ function destination(
 }
 function Empty() {
   return (
-    <div className="rounded-xl border border-dashed border-white/10 p-10 text-center text-sm text-slate-600">
+    <div className="rounded-2xl border border-dashed border-white/10 p-10 text-center text-sm text-slate-600">
       Nothing to review.
     </div>
   );

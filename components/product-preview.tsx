@@ -49,7 +49,7 @@ export function ProductPreview() {
       tl.to(
         "[data-resource]",
         {
-          backgroundColor: "rgba(255, 162, 0, 0.09)",
+          backgroundColor: "rgba(125, 163, 255, 0.10)",
           color: "#f8fafc",
           duration: 0.35,
         },
@@ -70,7 +70,7 @@ export function ProductPreview() {
           "[data-update-button]",
           {
             scale: 0.94,
-            backgroundColor: "rgba(246,184,74,.15)",
+            backgroundColor: "rgba(125,163,255,.16)",
             duration: 0.15,
           },
           1.95,
@@ -154,13 +154,13 @@ export function ProductPreview() {
     <div ref={root} className="mx-auto w-full max-w-[610px]">
       <div
         data-preview-window
-        className="relative overflow-hidden rounded-2xl border border-white/[.11] bg-[#0b1015] shadow-[0_40px_120px_rgba(0,0,0,.48)]"
+        className="relative overflow-hidden rounded-[18px] bg-[#050b17] shadow-[inset_0_0_0_1px_rgba(255,255,255,.075),0_28px_80px_rgba(0,0,0,.35)]"
       >
         <div className="flex h-10 items-center border-b border-white/[.08] px-4">
           <div className="flex gap-1.5">
             <i className="h-2 w-2 rounded-full bg-white/15" />
             <i className="h-2 w-2 rounded-full bg-white/15" />
-            <i className="h-2 w-2 rounded-full bg-amber-400/70" />
+            <i className="h-2 w-2 rounded-full bg-blue-300/70" />
           </div>
           <span className="mx-auto font-mono text-[8px] text-slate-500">
             LIVE UPDATE WORKFLOW
@@ -194,13 +194,13 @@ export function ProductPreview() {
                   <p className="mt-2 text-lg font-semibold text-white">
                     fm-garage
                   </p>
-                  <p className="mt-1 text-[9px] text-amber-300">
+                  <p className="mt-1 text-[9px] text-blue-200">
                     Update available · v1.0.2
                   </p>
                 </div>
                 <button
                   data-update-button
-                  className="rounded-md border border-amber-300/20 bg-amber-400/[.07] px-3 py-2 text-[8px] text-amber-200"
+                  className="rounded-lg bg-blue-300/[.08] px-3 py-2 text-[8px] text-blue-200 shadow-[0_0_0_1px_rgba(168,192,255,.16)]"
                 >
                   Update resource
                 </button>
@@ -215,7 +215,7 @@ export function ProductPreview() {
             </Panel>
             <Panel name="loading">
               <div className="flex h-[310px] flex-col items-center justify-center text-center">
-                <LoaderCircle className="h-7 w-7 animate-spin text-amber-300" />
+                <LoaderCircle className="h-7 w-7 animate-spin text-blue-200" />
                 <Label>3 · Preparing update</Label>
                 <p className="mt-3 text-base font-semibold text-white">
                   Analyzing resource files
@@ -226,7 +226,7 @@ export function ProductPreview() {
                 <div className="mt-6 h-1 w-full max-w-[250px] overflow-hidden rounded-full bg-white/[.06]">
                   <div
                     data-progress
-                    className="h-full origin-left rounded-full bg-gradient-to-r from-amber-400 to-emerald-400"
+                    className="h-full origin-left rounded-full bg-gradient-to-r from-blue-300 to-teal-300"
                   />
                 </div>
               </div>
@@ -329,7 +329,7 @@ function Panel({
 }
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-4 text-[7px] font-bold uppercase tracking-[.2em] text-amber-400 first:mt-0">
+    <p className="mt-4 text-[7px] font-bold uppercase tracking-[.2em] text-blue-300 first:mt-0">
       {children}
     </p>
   );
@@ -346,7 +346,7 @@ function Note({
   return (
     <div className="mt-4 rounded-lg border border-white/[.08] bg-white/[.025] p-3">
       <div className="flex items-center gap-2 text-[9px] text-slate-200">
-        <Icon className="h-3.5 w-3.5 text-amber-400" />
+        <Icon className="h-3.5 w-3.5 text-blue-300" />
         {title}
       </div>
       <p className="mt-2 text-[8px] text-slate-500">{children}</p>
@@ -400,12 +400,12 @@ function Row({
         {folder && <ChevronDown className="h-3 w-3" />}
       </span>
       <Icon
-        className={`h-3 w-3 ${folder || update ? "text-amber-400" : good ? "text-emerald-400" : "text-slate-500"}`}
+        className={`h-3 w-3 ${folder || update ? "text-blue-300" : good ? "text-teal-300" : "text-slate-500"}`}
       />
       <span>{name}</span>
       {good && <Check className="ml-auto h-2.5 w-2.5 text-emerald-400" />}
       {update && (
-        <span className="ml-auto font-mono text-[7px] text-amber-300">
+        <span className="ml-auto font-mono text-[7px] text-blue-200">
           v1.0.2
         </span>
       )}

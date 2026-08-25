@@ -20,7 +20,7 @@ export default async function CheckoutPage({
   const hasActivePlan = account?.subscription?.status === "active";
   return (
     <main className="checkout-surface min-h-screen bg-[#0a0e12]">
-      {/* <SiteHeader /> */}
+      <SiteHeader />
       {plan && !hasActivePlan ? (
         <Checkout
           plan={plan}
@@ -34,7 +34,7 @@ export default async function CheckoutPage({
           </h1>
           <a
             href={hasActivePlan ? "/account" : "/#pricing"}
-            className="mt-6 inline-block text-sm text-amber-300"
+            className="mt-6 inline-block text-sm text-blue-200"
           >
             {hasActivePlan ? "Open my account" : "Return to pricing"}
           </a>

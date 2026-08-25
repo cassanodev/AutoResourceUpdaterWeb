@@ -48,44 +48,38 @@ const steps = [
 
 export function WorkflowSteps() {
   return (
-    <div className="workflow-ledger ocean-glass relative mt-16 overflow-hidden rounded-[28px]">
-      <div className="hidden grid-cols-[74px_.72fr_1.28fr] gap-8 border-b border-white/[.07] px-8 py-4 text-[7px] font-bold uppercase tracking-[.18em] text-slate-600 lg:grid">
-        <span>Step</span>
-        <span>What you do</span>
-        <span>What you see</span>
-      </div>
-      <div>
+    <div className="relative mt-16">
+      <div className="absolute bottom-20 left-[27px] top-10 hidden w-px bg-gradient-to-b from-blue-200/5 via-blue-200/20 to-blue-200/5 lg:block" aria-hidden="true" />
+      <div className="space-y-5">
         {steps.map((step, index) => {
           const Visual = step.visual;
+          const reversed = index % 2 === 1;
           return (
             <article
               key={step.number}
-              className="workflow-row relative grid gap-7 border-b border-white/[.065] p-5 last:border-b-0 sm:p-7 lg:grid-cols-[74px_.72fr_1.28fr] lg:items-center lg:gap-8 lg:px-8 lg:py-9"
+              className="group relative grid gap-5 lg:grid-cols-[56px_1fr_1.22fr] lg:items-center lg:gap-8"
             >
               <div className="relative hidden self-stretch lg:block">
-                <span className="relative z-10 grid h-9 w-9 place-items-center rounded-full border border-blue-200/15 bg-[#0a1731] font-mono text-[8px] tracking-[.12em] text-blue-200/75">
+                <span className="relative z-10 grid h-14 w-14 place-items-center rounded-2xl bg-[#071329] font-mono text-[9px] tracking-[.12em] text-blue-200/75 shadow-[0_0_0_1px_rgba(168,192,255,.12),0_18px_45px_rgba(0,4,16,.3)] transition-[box-shadow,background-color] duration-150 ease-out group-hover:bg-[#0a1933] group-hover:shadow-[0_0_0_1px_rgba(168,192,255,.2),0_18px_45px_rgba(0,4,16,.35)]">
                   {step.number}
                 </span>
-                {index < steps.length - 1 && (
-                  <span className="absolute bottom-[-36px] left-[17px] top-9 w-px bg-gradient-to-b from-blue-200/20 to-blue-200/[.04]" />
-                )}
               </div>
-              <div>
+              <div className={`px-1 py-5 lg:px-3 ${reversed ? "lg:order-3" : ""}`}>
                 <div className="flex items-center gap-3 lg:hidden">
                   <span className="font-mono text-[9px] tracking-[.18em] text-blue-200/70">
                     {step.number}
                   </span>
                   <span className="h-px w-10 bg-gradient-to-r from-blue-200/50 to-transparent" />
                 </div>
-                <h3 className="display mt-4 max-w-sm text-2xl font-bold tracking-[-.035em] text-white lg:mt-0 lg:text-[28px]">
+                <h3 className="display mt-4 max-w-sm text-2xl font-semibold tracking-[-.04em] text-white lg:mt-0 lg:text-[30px]">
                   {step.title}
                 </h3>
-                <p className="mt-3 max-w-sm text-[11px] leading-6 text-slate-400">
+                <p className="mt-3 max-w-sm text-[12px] leading-6 text-slate-400">
                   {step.text}
                 </p>
               </div>
-              <div className="workflow-evidence relative min-w-0 overflow-hidden rounded-2xl border border-blue-100/[.08] bg-[#050e22]/55 p-4 sm:p-5">
-                <div className="pointer-events-none absolute inset-y-8 left-0 w-px bg-gradient-to-b from-transparent via-blue-200/35 to-transparent" />
+              <div className={`premium-card relative min-w-0 overflow-hidden rounded-3xl p-4 sm:p-5 ${reversed ? "lg:order-2" : ""}`}>
+                <div className="pointer-events-none absolute inset-y-8 left-0 w-px bg-gradient-to-b from-transparent via-blue-200/40 to-transparent" />
                 <Visual />
               </div>
             </article>
